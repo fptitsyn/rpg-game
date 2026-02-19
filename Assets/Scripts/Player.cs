@@ -1,4 +1,5 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float sprintMultiplier;
     [SerializeField] private float jumpForce;
     [SerializeField] private float distanceToGround;
+
+    [SerializeField] private GameObject freeLookCamera;
     
     private InputAction _lookAction;
     private InputAction _walkAction;
@@ -18,10 +21,13 @@ public class Player : MonoBehaviour
     private const float Gravity = -9.81f;
     
     private CharacterController _controller;
+    private CinemachineInputAxisController _inputAxisController;
     private bool _grounded;
     private Vector3 _velocity;
     private float _moveSpeed;
     private float _hp = 100;
+
+    public static Action<float> SensitivityChanged;
     
     private void Start()
     {
@@ -31,6 +37,10 @@ public class Player : MonoBehaviour
         _jumpAction = InputSystem.actions.FindAction("Jump");
         
         _controller = GetComponent<CharacterController>();
+        
+        _inputAxisController = freeLookCamera.GetComponent<CinemachineInputAxisController>();
+        
+        ChangeSensitivity(sensitivity);
     }
 
     private void Update()
@@ -82,5 +92,13 @@ public class Player : MonoBehaviour
     private void ReceiveDamage(float damage)
     {
         
+    }
+
+    private void ChangeSensitivity(float sens)
+    {
+        foreach (var c in _inputAxisController.Controllers)
+        {
+            c.Input.Gain *= sens;
+        }
     }
 }
