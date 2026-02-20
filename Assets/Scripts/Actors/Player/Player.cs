@@ -3,9 +3,9 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Player
+namespace Actors.Player
 {
-    public class Player : MonoBehaviour
+    public class Player : Actor
     {
         [SerializeField] private float walkSpeed;
         [SerializeField] private float sensitivity;
@@ -15,7 +15,7 @@ namespace Player
 
         [SerializeField] private float physicalDamage;
         [SerializeField] private float magicalDamage;
-    
+        
         [SerializeField] private GameObject freeLookCamera;
     
         private InputAction _lookAction;
@@ -32,7 +32,6 @@ namespace Player
         private bool _grounded;
         private Vector3 _velocity;
         private float _moveSpeed;
-        private float _hp = 100;
 
         public static Action<float> SensitivityChanged;
 
@@ -100,10 +99,11 @@ namespace Player
             transform.Rotate(Vector3.up, lookValue.x);
         }
 
-        private void ReceiveDamage(float damage)
+        protected override void ReceiveDamage(float damage)
         {
-            _hp = Mathf.Clamp(_hp - damage, 0f, 100f);
-            if (_hp <= 0f)
+            base.ReceiveDamage(damage);
+
+            if (CurrentHealth <= 0)
             {
                 PlayerDied?.Invoke();
             }

@@ -1123,11 +1123,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 721ebdbf7b6ecc2438bca13ee815f078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
   walkSpeed: 5
   sensitivity: 15
   sprintMultiplier: 1.5
   jumpForce: 4
   distanceToGround: 1.2
+  physicalDamage: 0
+  magicalDamage: 0
   freeLookCamera: {fileID: 14422824}
 --- !u!1 &689035930
 GameObject:
