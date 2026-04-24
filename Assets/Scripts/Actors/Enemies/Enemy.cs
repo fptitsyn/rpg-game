@@ -2,7 +2,7 @@ namespace Actors.Enemies
 {
     public class Enemy : Actor
     {
-        protected override void ReceiveDamage(float damage)
+        public override void ReceiveDamage(float damage)
         {
             base.ReceiveDamage(damage);
 

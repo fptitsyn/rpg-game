@@ -39,21 +39,20 @@ namespace Actors.Player
 
         private void Update()
         {
-            // Передача ввода в машину состояний
             stateMachine.MoveInput = walkAction.ReadValue<Vector2>();
             stateMachine.SprintHeld = sprintAction.IsPressed();
             stateMachine.JumpPressed = jumpAction.IsPressed();
             stateMachine.AttackPressed = attackAction.IsPressed();
             stateMachine.MagicPressed = magicAction.IsPressed();
 
-            // Поворот персонажа от мыши
             Vector2 lookValue = lookAction.ReadValue<Vector2>() * (sensitivity * Time.deltaTime);
             transform.Rotate(Vector3.up, lookValue.x);
         }
 
-        protected override void ReceiveDamage(float damage)
+        public override void ReceiveDamage(float damage)
         {
             base.ReceiveDamage(damage);
+            Debug.Log(CurrentHealth);
             if (CurrentHealth <= 0)
             {
                 stateMachine.Die();
