@@ -50,7 +50,7 @@ namespace Actors.Player
 
         private new void Update()
         {
-            base.Update(); // вызовет UpdateState(currentState)
+            base.Update();
         }
 
         #region State Enter/Exit/Update
@@ -62,11 +62,15 @@ namespace Actors.Player
                 case State.Idle:
                 case State.Walking:
                 case State.Sprinting:
-                    // Общие настройки для локомоции
                     break;
                 case State.Jumping:
                     velocity.y = jumpForce;
                     animator.SetInteger(JumpingParam, 1); // 1 = true
+                    SetAnimatorTrigger(AnimatorTrigger.JumpTrigger);
+                    break;
+                case State.Falling:
+                    animator.SetInteger(JumpingParam, 2);
+                    SetAnimatorTrigger(AnimatorTrigger.JumpTrigger);
                     break;
                 case State.PhysicalAttack:
                     animator.SetInteger(ActionParam, 0); // 0 - физическая атака
@@ -106,6 +110,9 @@ namespace Actors.Player
                 case State.Jumping:
                     HandleJumping();
                     break;
+                case State.Falling:
+                    HandleFalling();
+                    break;
                 case State.PhysicalAttack:
                 case State.MagicAttack:
                     HandleAttackState();
@@ -126,6 +133,11 @@ namespace Actors.Player
             {
                 case State.Jumping:
                     animator.SetInteger(JumpingParam, 0); // сброс
+                    SetAnimatorTrigger(AnimatorTrigger.JumpTrigger);
+                    break;
+                case State.Falling:
+                    animator.SetInteger(JumpingParam, 0);
+                    SetAnimatorTrigger(AnimatorTrigger.JumpTrigger);
                     break;
                 case State.PhysicalAttack:
                 case State.MagicAttack:
@@ -197,7 +209,18 @@ namespace Actors.Player
 
         private void HandleJumping()
         {
-            // Движение в воздухе (опционально)
+            Vector3 airMove = transform.right * MoveInput.x + transform.forward * MoveInput.y;
+            controller.Move(airMove * (walkSpeed * Time.deltaTime));
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+            if (velocity.y <= 0)
+            {
+                ChangeState(State.Falling);
+            }
+        }
+
+        private void HandleFalling()
+        {
             Vector3 airMove = transform.right * MoveInput.x + transform.forward * MoveInput.y;
             controller.Move(airMove * (walkSpeed * Time.deltaTime));
 
@@ -205,13 +228,13 @@ namespace Actors.Player
             controller.Move(velocity * Time.deltaTime);
 
             grounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, groundCheckDistance);
-            if (grounded && velocity.y <= 0)
+            if (grounded)
             {
                 velocity.y = -2f;
                 ChangeState(State.Idle);
             }
         }
-
+        
         private void HandleAttackState()
         {
             StateTimer -= Time.deltaTime;
@@ -235,5 +258,32 @@ namespace Actors.Player
         {
             ChangeState(State.Dead);
         }
+
+        private void SetAnimatorTrigger(AnimatorTrigger trigger)
+        {
+            animator.SetInteger("TriggerNumber", ( int )trigger);
+            animator.SetTrigger("Trigger");
+        }
+    }
+    
+    public enum AnimatorTrigger
+    {
+        NoTrigger = 0,
+        JumpTrigger = 1,
+        ActionTrigger = 2,
+        DashTrigger = 3,
+        AttackTrigger = 4,
+        JumpAttackTrigger = 5,
+        DeathTrigger = 6,
+        ReviveTrigger = 7,
+        LightHitTrigger = 8,
+        RollTrigger = 9,
+        AttackSpecialTrigger = 10,
+        AttackMoveTrigger = 11,
+        AttackRanged = 12,
+        BlockBreakTrigger = 13,
+        ReloadTrigger = 14,
+        WeaponSwitchTrigger = 15,
+        BlockTrigger = 16
     }
 }

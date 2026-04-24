@@ -10,6 +10,7 @@ namespace Actors
             Walking,
             Sprinting,
             Jumping,
+            Falling,
             PhysicalAttack,
             MagicAttack,
             Blocking,
