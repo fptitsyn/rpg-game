@@ -7,113 +7,61 @@ namespace Actors.Player
 {
     public class Player : Actor
     {
-        [SerializeField] private float walkSpeed;
-        [SerializeField] private float sensitivity;
-        [SerializeField] private float sprintMultiplier;
-        [SerializeField] private float jumpForce;
-        [SerializeField] private float distanceToGround;
-
-        [SerializeField] private float physicalDamage;
-        [SerializeField] private float magicalDamage;
-        
+        [Header("Components")]
         [SerializeField] private GameObject freeLookCamera;
-    
-        private InputAction _lookAction;
-        private InputAction _walkAction;
-        private InputAction _sprintAction;
-        private InputAction _jumpAction;
-        private InputAction _attackAction;
-        private InputAction _magicAction;
+        [SerializeField] private float sensitivity = 20f;
 
-        private const float Gravity = -9.81f;
-    
-        private CharacterController _controller;
-        private CinemachineInputAxisController _inputAxisController;
-        private bool _grounded;
-        private Vector3 _velocity;
-        private float _moveSpeed;
+        private PlayerStateMachine stateMachine;
+        private InputAction lookAction;
+        private InputAction walkAction;
+        private InputAction sprintAction;
+        private InputAction jumpAction;
+        private InputAction attackAction;
+        private InputAction magicAction;
 
-        public static Action<float> SensitivityChanged;
-
-        public static Action PlayerDied;
-    
+        public static Action PlayerDied; 
+        
         private void Start()
         {
-            _lookAction = InputSystem.actions.FindAction("Look");
-            _walkAction = InputSystem.actions.FindAction("Move");
-            _sprintAction = InputSystem.actions.FindAction("Sprint");
-            _jumpAction = InputSystem.actions.FindAction("Jump");
-            _attackAction = InputSystem.actions.FindAction("Attack");
-            _magicAction = InputSystem.actions.FindAction("Magic Attack");
-        
-            _controller = GetComponent<CharacterController>();
-        
-            _inputAxisController = freeLookCamera.GetComponent<CinemachineInputAxisController>();
-        
-            ChangeSensitivity(sensitivity);
+            stateMachine = GetComponent<PlayerStateMachine>();
+
+            lookAction = InputSystem.actions.FindAction("Look");
+            walkAction = InputSystem.actions.FindAction("Move");
+            sprintAction = InputSystem.actions.FindAction("Sprint");
+            jumpAction = InputSystem.actions.FindAction("Jump");
+            attackAction = InputSystem.actions.FindAction("Attack");
+            magicAction = InputSystem.actions.FindAction("Magic Attack");
+
+            var inputAxisController = freeLookCamera.GetComponent<CinemachineInputAxisController>();
+            foreach (var c in inputAxisController.Controllers)
+                c.Input.Gain = sensitivity;
         }
 
         private void Update()
         {
-            Walk();
-            Look();
-        }
+            // Передача ввода в машину состояний
+            stateMachine.MoveInput = walkAction.ReadValue<Vector2>();
+            stateMachine.SprintHeld = sprintAction.IsPressed();
+            stateMachine.JumpPressed = jumpAction.IsPressed();
+            stateMachine.AttackPressed = attackAction.IsPressed();
+            stateMachine.MagicPressed = magicAction.IsPressed();
 
-        private void Walk()
-        {
-            Vector2 moveValue = _walkAction.ReadValue<Vector2>();
-            if (_sprintAction.IsPressed() && moveValue is { y: > 0, x: 0 })
-            {
-                _moveSpeed = sprintMultiplier * walkSpeed;
-            }
-            else
-            {
-                _moveSpeed = walkSpeed;
-            }
-        
-            if (_controller.isGrounded && _velocity.y < 0)
-            {
-                _velocity.y = -2f;
-            }
-        
-            Vector3 move = transform.right * moveValue.x + transform.forward * moveValue.y;
-            
-            _controller.Move(move * (_moveSpeed * Time.deltaTime));
-            
-            _grounded = Physics.Raycast(transform.position, Vector3.down, distanceToGround);
-            
-            if (_jumpAction.IsPressed() && _grounded)
-            {
-                _grounded = false;
-                _velocity.y = jumpForce;
-            }
-            
-            _velocity.y += Gravity * Time.deltaTime;
-            _controller.Move(_velocity * Time.deltaTime);
-        }
-
-        private void Look()
-        {
-            Vector2 lookValue = _lookAction.ReadValue<Vector2>() * (sensitivity * Time.deltaTime);
-        
+            // Поворот персонажа от мыши
+            Vector2 lookValue = lookAction.ReadValue<Vector2>() * (sensitivity * Time.deltaTime);
             transform.Rotate(Vector3.up, lookValue.x);
         }
 
         protected override void ReceiveDamage(float damage)
         {
             base.ReceiveDamage(damage);
-
             if (CurrentHealth <= 0)
             {
+                stateMachine.Die();
                 PlayerDied?.Invoke();
             }
-        }
-
-        private void ChangeSensitivity(float sens)
-        {
-            foreach (var c in _inputAxisController.Controllers)
+            else
             {
-                c.Input.Gain *= sens;
+                stateMachine.TakeDamage();
             }
         }
     }
