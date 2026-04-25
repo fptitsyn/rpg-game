@@ -1,37 +1,140 @@
-﻿using System.Collections.Generic;
-using Actors.Enemies.BehaviourTree;
-using Actors.Enemies.BehaviourTree.Nodes;
-using Actors.Enemies.BehaviourTree.Base;
+﻿using UnityEngine;
 
 namespace Actors.Enemies
 {
-    public class MeleeEnemy : EnemyBehaviourTree
+    public class MeleeEnemy : EnemyStateMachine
     {
-        protected override List<Node> BuildTree(Node rootContext)
+        protected override void EnterState(EnemyState state)
         {
-            // Приоритеты:
-            // 1. Атаковать, если игрок в радиусе атаки
-            // 2. Преследовать, если игрок в радиусе обнаружения
-            // 3. Ждать (Idle)
-
-            var attackSequence = new Sequence(new List<Node>
+            switch (state)
             {
-                new CheckDistanceCondition(transform, 0f, attackRange),
-                new AttackAction(Animator, transform, attackDamage, attackRange, attackCooldown, attackTriggerName)
-            });
+                case EnemyState.Idle:
+                    agent.isStopped = true;
+                    break;
+                case EnemyState.Chase:
+                    agent.isStopped = false;
+                    break;
+                case EnemyState.Attack:
+                    agent.isStopped = true;
+                    attackInProgress = false;
+                    attackTimer = 0f;
+                    break;
+                case EnemyState.Flee:
+                    agent.isStopped = false;
+                    break;
+                case EnemyState.Dead:
+                    agent.isStopped = true;
+                    animator.SetTrigger("Death");
+                    enabled = false; // отключаем обновления
+                    break;
+            }
+        }
 
-            var chaseSequence = new Sequence(new List<Node>
-            {
-                new CheckDistanceCondition(transform, 0f, detectRange),
-                new MoveToTargetAction(Agent, transform, attackRange * 0.9f, false) // подойти чуть ближе минимальной дистанции
-            });
+        protected override void UpdateState(EnemyState state)
+        {
+            if (player == null) return;
+            float dist = DistanceToPlayer();
 
-            return new List<Node>
+            switch (state)
             {
-                attackSequence,
-                chaseSequence,
-                new IdleAction()
-            };
+                case EnemyState.Idle:
+                    LookAtPlayer();
+                    if (dist <= detectionRadius)
+                    {
+                        if (actor.CurrentHealth < fleeHealthThreshold)
+                            ChangeState(EnemyState.Flee);
+                        else
+                            ChangeState(EnemyState.Chase);
+                    }
+                    break;
+
+                case EnemyState.Chase:
+                    if (actor.CurrentHealth < fleeHealthThreshold)
+                    {
+                        ChangeState(EnemyState.Flee);
+                        return;
+                    }
+                    if (dist <= attackRange)
+                    {
+                        ChangeState(EnemyState.Attack);
+                        return;
+                    }
+                    if (dist > detectionRadius)
+                    {
+                        ChangeState(EnemyState.Idle);
+                        return;
+                    }
+                    agent.SetDestination(player.position);
+                    LookAtPlayer();
+                    break;
+
+                case EnemyState.Attack:
+                    if (actor.CurrentHealth < fleeHealthThreshold)
+                    {
+                        ChangeState(EnemyState.Flee);
+                        return;
+                    }
+                    if (dist > attackRange)
+                    {
+                        ChangeState(EnemyState.Chase);
+                        return;
+                    }
+                    LookAtPlayer();
+                    if (!attackInProgress)
+                    {
+                        if (Time.time >= attackTimer)
+                        {
+                            animator.SetTrigger("Attack");
+                            attackInProgress = true;
+                            damageDealt = false;
+                            attackTimer = Time.time + attackCooldown + attackAnimationDuration;
+                        }
+                    }
+                    else
+                    {
+                        if (!damageDealt && Time.time >= attackTimer - attackAnimationDuration + damageDelay)
+                        {
+                            if (DistanceToPlayer() <= attackRange)
+                            {
+                                var playerActor = player.GetComponent<Actor>();
+                                playerActor?.ReceiveDamage(attackDamage);
+                            }
+                            damageDealt = true;
+                        }
+                        if (Time.time >= attackTimer)
+                        {
+                            attackInProgress = false;
+                            ChangeState(DistanceToPlayer() <= detectionRadius ? EnemyState.Chase : EnemyState.Idle);
+                        }
+                    }
+                    break;
+
+                case EnemyState.Flee:
+                    if (actor.CurrentHealth > fleeHealthThreshold && DistanceToPlayer() > detectionRadius)
+                    {
+                        ChangeState(EnemyState.Idle);
+                        return;
+                    }
+                    Vector3 dirAway = (transform.position - player.position).normalized;
+                    agent.SetDestination(transform.position + dirAway * fleeDistance);
+                    if (DistanceToPlayer() > fleeDistance)
+                        ChangeState(EnemyState.Idle);
+                    break;
+            }
+        }
+
+        protected override void ExitState(EnemyState state)
+        {
+            switch (state)
+            {
+                case EnemyState.Chase:
+                case EnemyState.Flee:
+                    agent.ResetPath();
+                    break;
+                case EnemyState.Attack:
+                    attackInProgress = false;
+                    break;
+            }
         }
     }
 }

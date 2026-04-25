@@ -1,46 +1,153 @@
-﻿using System.Collections.Generic;
-using Actors.Enemies.BehaviourTree;
-using Actors.Enemies.BehaviourTree.Nodes;
-using Actors.Enemies.BehaviourTree.Base;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Actors.Enemies
 {
-    public class RangedEnemy : EnemyBehaviourTree
+    public class RangedEnemy : EnemyStateMachine
     {
-        [SerializeField] private float preferredMinDist = 5f;
-        [SerializeField] private float preferredMaxDist = 10f;
+        [Header("Ranged Settings")]
+        [SerializeField] private float minAttackDistance = 5f;
+        [SerializeField] private float maxAttackDistance = 10f;
 
-        protected override List<Node> BuildTree(Node rootContext)
+        protected override void EnterState(EnemyState state)
         {
-            // 1. Атаковать, если игрок внутри комфортной дистанции (5-10 м)
-            var attackInRange = new Sequence(new List<Node>
+            switch (state)
             {
-                new CheckDistanceCondition(transform, preferredMinDist, preferredMaxDist),
-                new AttackAction(Animator, transform, attackDamage, attackRange, attackCooldown, attackTriggerName)
-            });
+                case EnemyState.Idle:
+                    agent.isStopped = true;
+                    break;
+                case EnemyState.Chase:
+                    agent.isStopped = false;
+                    break;
+                case EnemyState.Attack:
+                    agent.isStopped = true;
+                    attackInProgress = false;
+                    attackTimer = 0f;
+                    break;
+                case EnemyState.Flee:
+                    agent.isStopped = false;
+                    break;
+                case EnemyState.Dead:
+                    agent.isStopped = true;
+                    animator.SetTrigger("Death");
+                    enabled = false;
+                    break;
+            }
+        }
 
-            // 2. Если игрок слишком далеко (>10 м), идти к нему, пока не войдёт в зону атаки
-            var approachSequence = new Sequence(new List<Node>
-            {
-                new CheckDistanceCondition(transform, preferredMaxDist, Mathf.Infinity),
-                new MoveToTargetAction(Agent, transform, preferredMaxDist - 1f, false)
-            });
+        protected override void UpdateState(EnemyState state)
+        {
+            if (player == null) return;
+            float dist = DistanceToPlayer();
 
-            // 3. Если игрок слишком близко (<5 м), отходить
-            var retreatSequence = new Sequence(new List<Node>
+            switch (state)
             {
-                new CheckDistanceCondition(transform, 0f, preferredMinDist),
-                new MoveToTargetAction(Agent, transform, preferredMinDist + 1f, true)
-            });
+                case EnemyState.Idle:
+                    LookAtPlayer();
+                    if (dist <= detectionRadius)
+                    {
+                        if (actor.CurrentHealth < fleeHealthThreshold)
+                            ChangeState(EnemyState.Flee);
+                        else if (dist >= minAttackDistance && dist <= maxAttackDistance)
+                            ChangeState(EnemyState.Attack);
+                        else if (dist > maxAttackDistance)
+                            ChangeState(EnemyState.Chase);
+                        else if (dist < minAttackDistance)
+                            ChangeState(EnemyState.Flee);
+                    }
+                    break;
 
-            return new List<Node>
+                case EnemyState.Chase:
+                    if (actor.CurrentHealth < fleeHealthThreshold)
+                    {
+                        ChangeState(EnemyState.Flee);
+                        return;
+                    }
+                    if (dist >= minAttackDistance && dist <= maxAttackDistance)
+                    {
+                        ChangeState(EnemyState.Attack);
+                        return;
+                    }
+                    if (dist > maxAttackDistance)
+                    {
+                        agent.SetDestination(player.position);
+                        LookAtPlayer();
+                    }
+                    else if (dist < minAttackDistance)
+                    {
+                        ChangeState(EnemyState.Flee);
+                    }
+                    if (dist > detectionRadius)
+                        ChangeState(EnemyState.Idle);
+                    break;
+
+                case EnemyState.Attack:
+                    if (actor.CurrentHealth < fleeHealthThreshold)
+                    {
+                        ChangeState(EnemyState.Flee);
+                        return;
+                    }
+                    if (dist < minAttackDistance || dist > maxAttackDistance)
+                    {
+                        ChangeState(dist < minAttackDistance ? EnemyState.Flee : EnemyState.Chase);
+                        return;
+                    }
+                    LookAtPlayer();
+                    if (!attackInProgress)
+                    {
+                        if (Time.time >= attackTimer)
+                        {
+                            animator.SetTrigger("Attack");
+                            attackInProgress = true;
+                            damageDealt = false;
+                            attackTimer = Time.time + attackCooldown + attackAnimationDuration;
+                        }
+                    }
+                    else
+                    {
+                        if (!damageDealt && Time.time >= attackTimer - attackAnimationDuration + damageDelay)
+                        {
+                            var playerActor = player.GetComponent<Actor>();
+                            playerActor?.ReceiveDamage(attackDamage);
+                            damageDealt = true;
+                        }
+                        if (Time.time >= attackTimer)
+                        {
+                            attackInProgress = false;
+                            float d = DistanceToPlayer();
+                            if (d >= minAttackDistance && d <= maxAttackDistance)
+                                ChangeState(EnemyState.Attack);
+                            else
+                                ChangeState(d < minAttackDistance ? EnemyState.Flee : EnemyState.Chase);
+                        }
+                    }
+                    break;
+
+                case EnemyState.Flee:
+                    if (actor.CurrentHealth > fleeHealthThreshold && dist >= minAttackDistance)
+                    {
+                        ChangeState(EnemyState.Idle);
+                        return;
+                    }
+                    Vector3 dirAway = (transform.position - player.position).normalized;
+                    agent.SetDestination(transform.position + dirAway * fleeDistance);
+                    if (dist > fleeDistance)
+                        ChangeState(EnemyState.Idle);
+                    break;
+            }
+        }
+
+        protected override void ExitState(EnemyState state)
+        {
+            switch (state)
             {
-                attackInRange,
-                approachSequence,
-                retreatSequence,
-                new IdleAction()
-            };
+                case EnemyState.Chase:
+                case EnemyState.Flee:
+                    agent.ResetPath();
+                    break;
+                case EnemyState.Attack:
+                    attackInProgress = false;
+                    break;
+            }
         }
     }
 }

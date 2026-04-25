@@ -1410,11 +1410,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbaa9b5c30c14f2b83310a4d2aa1ea49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 10
+  detectionRadius: 10
   attackRange: 2
   attackCooldown: 1.5
-  detectRange: 10
-  attackTriggerName: Attack
+  attackDamage: 10
+  attackAnimationDuration: 0.8
+  damageDelay: 0.4
+  moveSpeed: 3.5
+  fleeHealthThreshold: 30
+  fleeDistance: 15
+--- !u!114 &1521312139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521312132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f1e7ec01d31c747b26c4d0420a382a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!1 &1771037015 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3422963555659422823, guid: b6d74a1c198205d4890ed5ed154bbb00, type: 3}
@@ -1569,13 +1586,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42dd1c7186748acb72762206ee99e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 10
+  detectionRadius: 10
   attackRange: 2
   attackCooldown: 1.5
-  detectRange: 10
-  attackTriggerName: Attack
-  preferredMinDist: 5
-  preferredMaxDist: 10
+  attackDamage: 10
+  attackAnimationDuration: 0.8
+  damageDelay: 0.4
+  moveSpeed: 3.5
+  fleeHealthThreshold: 30
+  fleeDistance: 15
+  minAttackDistance: 5
+  maxAttackDistance: 10
+--- !u!114 &2009707518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009707511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f1e7ec01d31c747b26c4d0420a382a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!1 &2016662939
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,6 +1781,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6358618826170256532, guid: 38730d735bb63334d8525fde1dd405f5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2009707514}
+    - targetCorrespondingSourceObject: {fileID: 6358618826170256532, guid: 38730d735bb63334d8525fde1dd405f5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2009707518}
   m_SourcePrefab: {fileID: 100100000, guid: 38730d735bb63334d8525fde1dd405f5, type: 3}
 --- !u!95 &3336752873238847839 stripped
 Animator:
@@ -1832,6 +1869,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6130016871572521932, guid: fe6777232b2683b41ad7829de75e33f2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1521312135}
+    - targetCorrespondingSourceObject: {fileID: 6130016871572521932, guid: fe6777232b2683b41ad7829de75e33f2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1521312139}
   m_SourcePrefab: {fileID: 100100000, guid: fe6777232b2683b41ad7829de75e33f2, type: 3}
 --- !u!1001 &8315898932256069730
 PrefabInstance:

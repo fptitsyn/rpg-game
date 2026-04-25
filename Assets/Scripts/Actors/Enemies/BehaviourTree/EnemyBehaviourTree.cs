@@ -23,7 +23,7 @@ namespace Actors.Enemies.BehaviourTree
             Agent = GetComponent<NavMeshAgent>();
             Animator = GetComponent<Animator>();
             FindPlayer();
-            base.Awake(); // вызовет SetupTree()
+            base.Awake();
         }
 
         private void FindPlayer()
