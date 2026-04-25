@@ -22,8 +22,7 @@ namespace Actors.Enemies
         protected Actor actor;
 
         [Header("Основные параметры")]
-        [SerializeField] protected float detectionRadius = 10f;
-        [SerializeField] protected float attackRange = 2f;     // Для ближнего боя
+        [SerializeField] protected float detectionRadius = 25f;
         [SerializeField] protected float attackCooldown = 1.5f;
         [SerializeField] protected float attackDamage = 10f;
         [SerializeField] protected float attackAnimationDuration = 0.8f;
@@ -65,7 +64,7 @@ namespace Actors.Enemies
                 else return; // Стан замораживает всё поведение
             }
 
-            animator.SetBool("Moving", agent.velocity.sqrMagnitude > 0.1f);
+            animator.SetBool("Walking", agent.velocity.sqrMagnitude > 0.1f);
             UpdateState(currentState);
         }
 
@@ -86,9 +85,8 @@ namespace Actors.Enemies
             stunTimer = stunDuration;
             attackInProgress = false;
 
-            // if (actor.CurrentHealth <= 0)
-            //     ChangeState(EnemyState.Dead);
-            // TODO: event
+            if (actor.CurrentHealth <= 0)
+                ChangeState(EnemyState.Dead);
         }
 
         protected abstract void EnterState(EnemyState state);

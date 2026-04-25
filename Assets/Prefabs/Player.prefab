@@ -1089,9 +1089,10 @@ GameObject:
   - component: {fileID: 6744332935480525607}
   - component: {fileID: 4559752279867891293}
   - component: {fileID: 2392896127318948003}
+  - component: {fileID: 1969296898642265726}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1126,10 +1127,10 @@ Animator:
   m_GameObject: {fileID: 3422963555659422823}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 351cee7bf494ce441a68f5f0b8f3868a, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8cd5cc76fa1680544a703b3cd44e4a3a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -1151,14 +1152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  walkSpeed: 5
-  sensitivity: 20
-  sprintMultiplier: 1.5
-  jumpForce: 4
-  distanceToGround: 0.2
-  physicalDamage: 0
-  magicalDamage: 0
   freeLookCamera: {fileID: 3895653573482477506}
+  sensitivity: 20
 --- !u!143 &4559752279867891293
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1207,6 +1202,23 @@ CapsuleCollider:
   m_Height: 1.9
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1969296898642265726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3422963555659422823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd68fa99170d45ca96e955ec7eac0627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  walkSpeed: 4
+  sprintMultiplier: 1.75
+  jumpForce: 4
+  groundCheckDistance: 0.2
 --- !u!1 &3456538178421861667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,8 +1312,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3895653573482477506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.067020416, y: -0.000000012703542, z: 8.5331536e-10, w: 0.99775165}
-  m_LocalPosition: {x: 0, y: 1.5035291, z: -4.7685847}
+  m_LocalRotation: {x: -0.008209257, y: -9.09464e-13, z: -7.472143e-15, w: 0.9999663}
+  m_LocalPosition: {x: 0, y: 1.6904731, z: -3.625231}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1370,7 +1382,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 5
+  Radius: 4
   Orbits:
     Top:
       Radius: 2
@@ -1394,9 +1406,9 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 17.5
-    Center: 17.5
-    Range: {x: -10, y: 45}
+    Value: 25
+    Center: 25
+    Range: {x: -20, y: 60}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -1435,7 +1447,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0.86, z: 0}
+  TargetOffset: {x: 0, y: 1.75, z: 0}
   Damping: {x: 0.5, y: 0.5}
   Lookahead:
     Enabled: 0
@@ -1492,7 +1504,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-        Gain: -1
+        Gain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:

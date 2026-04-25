@@ -15,6 +15,7 @@ namespace Actors.Enemies
                 case EnemyState.Idle:
                     agent.isStopped = true;
                     break;
+                case EnemyState.Flee:
                 case EnemyState.Chase:
                     agent.isStopped = false;
                     break;
@@ -22,9 +23,6 @@ namespace Actors.Enemies
                     agent.isStopped = true;
                     attackInProgress = false;
                     attackTimer = 0f;
-                    break;
-                case EnemyState.Flee:
-                    agent.isStopped = false;
                     break;
                 case EnemyState.Dead:
                     agent.isStopped = true;
@@ -36,9 +34,9 @@ namespace Actors.Enemies
 
         protected override void UpdateState(EnemyState state)
         {
-            if (player == null) return;
+            if (!player) return;
             float dist = DistanceToPlayer();
-
+            
             switch (state)
             {
                 case EnemyState.Idle:

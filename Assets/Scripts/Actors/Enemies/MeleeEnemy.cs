@@ -4,6 +4,8 @@ namespace Actors.Enemies
 {
     public class MeleeEnemy : EnemyStateMachine
     {
+        [SerializeField] private float attackRange = 2f;
+        
         protected override void EnterState(EnemyState state)
         {
             switch (state)
