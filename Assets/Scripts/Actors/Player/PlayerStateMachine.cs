@@ -140,6 +140,9 @@ namespace Actors.Player
                     SetAnimatorTrigger(AnimatorTrigger.JumpTrigger);
                     break;
                 case State.PhysicalAttack:
+                    SetAnimatorTrigger(AnimatorTrigger.AttackTrigger);
+                    animator.SetInteger(ActionParam, 1);
+                    break;
                 case State.MagicAttack:
                     animator.SetInteger(ActionParam, -1); // сброс действия
                     break;

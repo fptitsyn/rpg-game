@@ -1642,10 +1642,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Range
       objectReference: {fileID: 0}
-    - target: {fileID: 6831781849829875334, guid: 38730d735bb63334d8525fde1dd405f5, type: 3}
-      propertyPath: detectionRadius
-      value: 20
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
