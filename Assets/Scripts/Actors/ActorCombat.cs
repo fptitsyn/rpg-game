@@ -1,7 +1,6 @@
 using Actors.Animations;
 using Actors.Health;
 using Combat;
-using Game;
 using UnityEngine;
 
 namespace Actors

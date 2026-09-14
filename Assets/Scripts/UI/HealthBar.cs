@@ -7,31 +7,57 @@ namespace UI
 {
     public sealed class HealthBar : MonoBehaviour
     {
+        [SerializeField] private Image fill;
+        [SerializeField] private TMP_Text label;
+        [SerializeField] private bool faceCamera;
+
         private IHealth _health;
-        private Image _fill;
-        private TMP_Text _label;
         private Camera _viewCamera;
-        
-        public void Initialize(IHealth model, Image bar, TMP_Text text, Camera cam = null)
+
+        public void Bind(IHealth healthModel, Camera cam = null)
         {
-            _health = model;
-            _fill = bar;
-            _label = text;
+            if (_health != null)
+            {
+                _health.Changed -= Refresh;
+            }
+
+            _health = healthModel;
             _viewCamera = cam;
+
+            if (_health == null)
+            {
+                return;
+            }
+
             _health.Changed += Refresh;
             Refresh(_health.Current, _health.Maximum);
         }
-        
+
         private void Refresh(float current, float maximum)
         {
-            _fill.fillAmount = current / maximum;
-            _fill.color = Color.Lerp(new Color(0.9f, 0.2f, 0.2f), new Color(0.25f, 0.85f, 0.45f), current / maximum);
-            if (_label != null) _label.text = $"HP  {Mathf.CeilToInt(current)} / {Mathf.CeilToInt(maximum)}";
+            if (fill == null)
+            {
+                return;
+            }
+
+            float normalizedHealth = current / maximum;
+
+            fill.fillAmount = normalizedHealth;
+            fill.color = Color.Lerp(
+                new Color(0.9f, 0.2f, 0.2f),
+                new Color(0.25f, 0.85f, 0.45f),
+                normalizedHealth
+            );
+
+            if (label != null)
+            {
+                label.text = $"HP {Mathf.CeilToInt(current)} / {Mathf.CeilToInt(maximum)}";
+            }
         }
-        
+
         private void LateUpdate()
         {
-            if (_viewCamera)
+            if (faceCamera && _viewCamera)
             {
                 transform.rotation = _viewCamera.transform.rotation;
             }

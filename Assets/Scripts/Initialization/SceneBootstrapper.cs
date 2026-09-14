@@ -3,73 +3,62 @@ using Actors.Enemies;
 using Actors.Player;
 using CameraScripts;
 using Combat.Projectiles;
-using Game;
-using Unity.AI.Navigation;
+using UI;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 namespace Initialization
 {
     public sealed class SceneBootstrapper : MonoBehaviour
     {
-        public CharacterDefinition player;
-        public CharacterDefinition meleeEnemy;
-        public CharacterDefinition rangedEnemy;
-        public Material projectileMaterial;
-        public NavMeshSurface navigation;
-        public Camera gameCamera;
-        public Vector3 playerSpawn = new Vector3(0, 0, -12);
-        private PlayerInput _input;
-        private UiFactory _ui;
-        private CursorLockMode _previousLock;
-        private bool _previousVisible;
+        [Header("Player")]
+        [SerializeField] PlayerSetup player;
+
+        [Header("Enemies")]
+        [SerializeField] CharacterDefinition meleeEnemy;
+        [SerializeField] CharacterDefinition rangedEnemy;
+
+        [Header("Scene")]
+        [SerializeField] Material projectileMaterial;
+        [SerializeField] Camera gameCamera;
+        [SerializeField] OrbitCamera orbitCamera;
+
+        [Header("Input")]
+        [SerializeField] InputActionAsset inputActions;
+
+        [Header("UI")]
+        [SerializeField] GameHud gameHud;
+        [SerializeField] HealthBar playerHealthBar;
+
+        private CursorLockMode _previousCursorLock;
+        private bool _previousCursorVisibility;
 
         private void Awake()
         {
-            _previousLock = Cursor.lockState;
-            _previousVisible = Cursor.visible;
+            _previousCursorLock = Cursor.lockState;
+            _previousCursorVisibility = Cursor.visible;
             
-            if (!Valid(player) || !Valid(meleeEnemy) || !Valid(rangedEnemy) ||
-                navigation == null || gameCamera == null || projectileMaterial == null)
-            {
-                Debug.LogError("Scene setup is incomplete. Assign character settings, camera, navigation and projectile material on SceneBootstrapper.");
-                enabled = false;
-                return;
-            }
-            
-            // Bake before adding actors; only World layer participates in navigation.
-            navigation.BuildNavMesh();
-            if (!NavMesh.SamplePosition(playerSpawn, out var start, 2, NavMesh.AllAreas))
-            {
-                Debug.LogError("Game: player spawn is outside NavMesh.");
-                enabled = false;
-                return;
-            }
-            
-            _input = new PlayerInput();
-            _ui = new UiFactory();
-            
-            var factory = new ActorFactory(new ProjectileFactory(projectileMaterial), _ui, gameCamera);
-            var orbit = gameCamera.gameObject.AddComponent<OrbitCamera>();
-            var hero = factory.CreatePlayer(player, start.position, _input, orbit);
-            
-            var spawner = new EnemySpawner(factory);
-            spawner.Spawn(meleeEnemy, hero, false, Random.Range(2, 4));
-            spawner.Spawn(rangedEnemy, hero, true, Random.Range(2, 4));
-            
+            InputActionMap playerActions = inputActions.FindActionMap("Player", throwIfNotFound: true);
+            ProjectileFactory projectileFactory = new ProjectileFactory(projectileMaterial);
+
+            player.Initialize(playerActions, projectileFactory, orbitCamera);
+
+            playerHealthBar.Bind(player.Combatant.Health);
+            gameHud.Bind(player.Combatant.Health, player.Combat);
+
+            ActorFactory actorFactory = new ActorFactory(projectileFactory, gameCamera);
+            EnemySpawner enemySpawner = new EnemySpawner(actorFactory);
+            enemySpawner.Spawn(meleeEnemy, player.Combatant, false, Random.Range(2, 4));
+            enemySpawner.Spawn(rangedEnemy, player.Combatant, true, Random.Range(2, 4));
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-        
-        private static bool Valid(CharacterDefinition settings) => settings != null &&
-            settings.visualPrefab != null && settings.controller != null &&
-            settings.visualPrefab.GetComponentInChildren<Animator>() != null;
-        
+
         private void OnDestroy()
         {
-            _input?.Dispose();
-            _ui?.Dispose();
-            Cursor.lockState = _previousLock; Cursor.visible = _previousVisible;
+            Cursor.lockState = _previousCursorLock;
+            Cursor.visible = _previousCursorVisibility;
         }
     }
 }

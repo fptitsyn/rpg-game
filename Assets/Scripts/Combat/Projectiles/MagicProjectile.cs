@@ -1,7 +1,6 @@
 using System;
 using Actors;
 using Actors.Health;
-using Game;
 using UnityEngine;
 
 namespace Combat.Projectiles

@@ -1,5 +1,4 @@
 using Combat;
-using Game;
 using UnityEngine;
 
 namespace CameraScripts
