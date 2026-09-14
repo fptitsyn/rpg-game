@@ -1,14 +1,11 @@
 using Actors.Animations;
 using Actors.Enemies;
 using Actors.Health;
-using Actors.Player;
-using CameraScripts;
 using Combat;
 using Combat.Projectiles;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 namespace Actors
 {
@@ -23,11 +20,7 @@ namespace Actors
             _camera = camera;
         }
 
-        public Combatant CreateEnemy(
-            CharacterDefinition definition,
-            Vector3 position,
-            Combatant target,
-            bool ranged)
+        public Combatant CreateEnemy(CharacterDefinition definition, Vector3 position, Combatant target, bool ranged)
         {
             Combatant actor = Create(
                 ranged ? "Ranged enemy" : "Melee enemy",
@@ -37,15 +30,13 @@ namespace Actors
                 out ActorCombat combat,
                 out CharacterAnimation animation);
 
-            CapsuleCollider capsule =
-                actor.gameObject.AddComponent<CapsuleCollider>();
+            CapsuleCollider capsule = actor.gameObject.AddComponent<CapsuleCollider>();
 
             capsule.height = 1.8f;
             capsule.center = Vector3.up * 0.9f;
             capsule.radius = 0.35f;
 
-            NavMeshAgent agent =
-                actor.gameObject.AddComponent<NavMeshAgent>();
+            NavMeshAgent agent = actor.gameObject.AddComponent<NavMeshAgent>();
 
             agent.height = 1.8f;
             agent.radius = 0.4f;
@@ -53,18 +44,9 @@ namespace Actors
             agent.acceleration = 18;
             agent.angularSpeed = 600;
 
-            EnemyBrain brain =
-                actor.gameObject.AddComponent<EnemyBrain>();
-
-            brain.Initialize(
-                actor,
-                target,
-                agent,
-                combat,
-                animation,
-                ranged,
-                definition.meleeReach);
-
+            EnemyBrain brain = actor.gameObject.AddComponent<EnemyBrain>();
+            brain.Initialize(actor, target, agent, combat, animation, ranged, definition.meleeReach);
+            
             return actor;
         }
 
@@ -84,45 +66,29 @@ namespace Actors
             Combatant actor = root.AddComponent<Combatant>();
             actor.Initialize(definition.health, faction);
 
-            GameObject visual = Object.Instantiate(
-                definition.visualPrefab,
-                root.transform);
+            GameObject visual = Object.Instantiate(definition.visualPrefab, root.transform);
 
             visual.name = "Visual";
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation =
-                Quaternion.Euler(0, definition.visualYaw, 0);
-            visual.transform.localScale =
-                Vector3.one * definition.visualScale;
+            visual.transform.localRotation = Quaternion.Euler(0, definition.visualYaw, 0);
+            visual.transform.localScale = Vector3.one * definition.visualScale;
 
-            Animator animator =
-                visual.GetComponentInChildren<Animator>();
-
-            animator.runtimeAnimatorController =
-                definition.controller;
-
-            animation =
-                root.AddComponent<CharacterAnimation>();
-
+            Animator animator = visual.GetComponentInChildren<Animator>();
+            animator.runtimeAnimatorController = definition.controller;
+            animation = root.AddComponent<CharacterAnimation>();
             animation.Initialize(animator, definition);
 
             combat = root.AddComponent<ActorCombat>();
 
-            combat.Initialize(
-                actor,
-                definition,
-                animation,
-                new MeleeAttack(actor, definition),
-                new MagicAttack(
-                    actor,
-                    definition,
-                    _projectiles));
+            combat.Initialize(actor, definition, animation, new MeleeAttack(actor, definition),
+                new MagicAttack(actor, definition, _projectiles));
 
-            HealthBar healthBar =
-                visual.GetComponentInChildren<HealthBar>(true);
+            HealthBar healthBar = visual.GetComponentInChildren<HealthBar>(true);
 
             if (healthBar != null)
+            {
                 healthBar.Bind(actor.Health, _camera);
+            }
 
             return actor;
         }

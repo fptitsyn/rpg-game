@@ -43,7 +43,7 @@ namespace Initialization
 
             player.Initialize(playerActions, projectileFactory, orbitCamera);
 
-            playerHealthBar.Bind(player.Combatant.Health);
+            playerHealthBar.Bind(player.Combatant.Health, gameCamera);
             gameHud.Bind(player.Combatant.Health, player.Combat);
 
             ActorFactory actorFactory = new ActorFactory(projectileFactory, gameCamera);
