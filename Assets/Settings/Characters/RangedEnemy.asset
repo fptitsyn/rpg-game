@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d1c82899035e96995edd96ada7a9d7, type: 3}
+  m_Name: RangedEnemy
+  m_EditorClassIdentifier: 
+  visualPrefab: {fileID: 2858740891376179160, guid: 97968c2440c1a804abf88a7271717544, type: 3}
+  controller: {fileID: 22100000, guid: 7337673bc91c5be4fa942b0ac65ab017, type: 2}
+  legacyMonsterAnimator: 1
+  visualScale: 1
+  visualYaw: 0
+  health: 55
+  physicalDamage: 0
+  magicalDamage: 15
+  walkSpeed: 2.6
+  runSpeed: 4
+  meleeDuration: 1.3333334
+  meleeImpact: 0.50666666
+  magicDuration: 1.8333334
+  magicImpact: 0.64166665
+  meleeCooldown: 1.5833334
+  magicCooldown: 2.2
+  meleeReach: 2
+  meleeArc: 110
+  hitDuration: 0.35
+  deathDuration: 1.2333333
+  projectileSpeed: 12
+  projectileLifetime: 3
+  projectileColor: {r: 1, g: 0.25, b: 0.7, a: 1}

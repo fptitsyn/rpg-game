@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Player Melee
   - Enemy
+  - Collide
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - LabWorld
+  - LabActors
   - 
   - 
   - 
