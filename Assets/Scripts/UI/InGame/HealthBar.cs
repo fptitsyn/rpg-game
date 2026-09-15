@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.InGame
 {
     public sealed class HealthBar : MonoBehaviour
     {

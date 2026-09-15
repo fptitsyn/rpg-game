@@ -4,6 +4,7 @@ using Actors.Player;
 using CameraScripts;
 using Combat.Projectiles;
 using UI;
+using UI.InGame;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

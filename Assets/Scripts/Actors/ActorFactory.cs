@@ -4,6 +4,7 @@ using Actors.Health;
 using Combat;
 using Combat.Projectiles;
 using UI;
+using UI.InGame;
 using UnityEngine;
 using UnityEngine.AI;
 
