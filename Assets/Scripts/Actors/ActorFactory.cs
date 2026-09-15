@@ -51,12 +51,8 @@ namespace Actors
         }
 
         private Combatant Create(
-            string objectName,
-            CharacterDefinition definition,
-            Vector3 position,
-            Faction faction,
-            out ActorCombat combat,
-            out CharacterAnimation animation)
+            string objectName, CharacterDefinition definition, Vector3 position,
+            Faction faction, out ActorCombat combat, out CharacterAnimation animation)
         {
             GameObject root = new GameObject(objectName);
 
