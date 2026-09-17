@@ -3,14 +3,15 @@ using Actors.Enemies;
 using Actors.Player;
 using CameraScripts;
 using Combat.Projectiles;
-using UI;
 using UI.InGame;
+using UI.Menu;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace Initialization
 {
-    public sealed class SceneBootstrapper : MonoBehaviour
+    public sealed class GameplayBootstrapper : MonoBehaviour
     {
         [Header("Player")]
         [SerializeField] PlayerSetup player;
@@ -30,6 +31,9 @@ namespace Initialization
         [Header("UI")]
         [SerializeField] GameHud gameHud;
         [SerializeField] HealthBar playerHealthBar;
+        
+        [SerializeField] string mainMenuScene = "MainMenu";
+        [SerializeField] PauseMenu pauseMenu;
 
         private CursorLockMode _previousCursorLock;
         private bool _previousCursorVisibility;
@@ -56,8 +60,16 @@ namespace Initialization
             Cursor.visible = false;
         }
 
+        private void OpenMainMenu()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(mainMenuScene);
+        }
+        
         private void OnDestroy()
         {
+            pauseMenu.MainMenuClicked -= OpenMainMenu;
+            
             Cursor.lockState = _previousCursorLock;
             Cursor.visible = _previousCursorVisibility;
         }

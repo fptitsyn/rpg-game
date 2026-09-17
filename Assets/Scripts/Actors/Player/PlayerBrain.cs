@@ -38,7 +38,6 @@ namespace Actors.Player
             _sprintAction = FindAction("Sprint");
             _attackAction = FindAction("Attack");
             _magicAction = FindAction("Magic Attack");
-            _releaseCursorAction = FindAction("Release Cursor");
 
             _inputMap.Enable();
         }
@@ -49,12 +48,6 @@ namespace Actors.Player
 
             if (!_actor.IsAlive)
                 return;
-
-            if (_releaseCursorAction.WasPressedThisFrame())
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
 
             bool attackPressed = _attackAction.WasPressedThisFrame();
             bool magicPressed = _magicAction.WasPressedThisFrame();

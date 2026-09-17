@@ -97,7 +97,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Release Cursor",
+                    "name": "Pause",
                     "type": "Button",
                     "id": "bb0657e6-7738-4106-98ac-e48c09f5061a",
                     "expectedControlType": "",
@@ -510,7 +510,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Release Cursor",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

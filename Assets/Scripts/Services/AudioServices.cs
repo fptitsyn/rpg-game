@@ -57,7 +57,6 @@ namespace Services
         private void ApplyVolume(string parameter, float value)
         {
             float decibels = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20f;
-
             _audioMixer.SetFloat(parameter, decibels);
         }
     }
