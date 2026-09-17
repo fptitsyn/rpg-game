@@ -33,6 +33,7 @@ namespace Actors.Player
             _definition = settings;
             _orbit = cameraRig;
 
+            // set in inspector?
             _moveAction = FindAction("Move");
             _lookAction = FindAction("Look");
             _sprintAction = FindAction("Sprint");
@@ -46,6 +47,9 @@ namespace Actors.Player
         {
             _motor.SetVelocity(Vector3.zero);
 
+            if (Time.timeScale == 0f)
+                return;
+            
             if (!_actor.IsAlive)
                 return;
 

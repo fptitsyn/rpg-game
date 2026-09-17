@@ -58,6 +58,8 @@ namespace Initialization
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            
+            pauseMenu.MainMenuClicked += OpenMainMenu;
         }
 
         private void OpenMainMenu()
