@@ -1,6 +1,6 @@
 using System;
 
-namespace Actors.Health
+namespace Actors.Stats
 {
     public sealed class Health : IHealth, IDamageReceiver
     {
@@ -26,6 +26,15 @@ namespace Actors.Health
             
             if (IsAlive) Damaged?.Invoke(damage);
             else Died?.Invoke();
+        }
+        
+        public void Restore(float value)
+        {
+            bool wasAlive = IsAlive;
+            Current = Math.Clamp(value, 0f, Maximum);
+            Changed?.Invoke(Current, Maximum);
+
+            if (wasAlive && !IsAlive) Died?.Invoke();
         }
     }
 }

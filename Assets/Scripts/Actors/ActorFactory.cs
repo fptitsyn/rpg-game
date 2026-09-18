@@ -1,6 +1,6 @@
 using Actors.Animations;
 using Actors.Enemies;
-using Actors.Health;
+using Actors.Stats;
 using Combat;
 using Combat.Projectiles;
 using UI;
@@ -67,8 +67,6 @@ namespace Actors
 
             visual.name = "Visual";
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.Euler(0, definition.visualYaw, 0);
-            visual.transform.localScale = Vector3.one * definition.visualScale;
 
             Animator animator = visual.GetComponentInChildren<Animator>();
             animator.runtimeAnimatorController = definition.controller;

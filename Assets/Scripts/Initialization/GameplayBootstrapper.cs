@@ -3,8 +3,10 @@ using Actors.Enemies;
 using Actors.Player;
 using CameraScripts;
 using Combat.Projectiles;
+using SaveSystem;
 using UI.InGame;
 using UI.Menu;
+using UI.Menu.Pause;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -38,6 +40,8 @@ namespace Initialization
         private CursorLockMode _previousCursorLock;
         private bool _previousCursorVisibility;
 
+        private PauseMenuController _pauseController;
+
         private void Awake()
         {
             _previousCursorLock = Cursor.lockState;
@@ -48,6 +52,10 @@ namespace Initialization
 
             player.Initialize(playerActions, projectileFactory, orbitCamera);
 
+            IGameSaveRepository saveRepository = GameBootstrapper.Instance.Services.SaveRepository;
+            GameSaveInteractor saveInteractor = new GameSaveInteractor(saveRepository, player);
+            _pauseController = new PauseMenuController(new PauseMenuModel(), pauseMenu, saveInteractor, OpenMainMenu);
+            
             playerHealthBar.Bind(player.Combatant.Health, gameCamera);
             gameHud.Bind(player.Combatant.Health, player.Combat);
 

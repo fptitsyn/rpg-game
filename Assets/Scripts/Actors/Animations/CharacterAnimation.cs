@@ -23,7 +23,7 @@ namespace Actors.Animations
         {
             _animator = target;
             _definition = settings;
-            _legacy = settings.legacyMonsterAnimator;
+            _legacy = settings.monsterAnimator;
             _animator.applyRootMotion = false;
             _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
         }

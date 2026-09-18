@@ -33,7 +33,7 @@ namespace Actors.Player
             _definition = settings;
             _orbit = cameraRig;
 
-            // set in inspector?
+            // set in inspector? (almost DI)
             _moveAction = FindAction("Move");
             _lookAction = FindAction("Look");
             _sprintAction = FindAction("Sprint");

@@ -1,5 +1,5 @@
 using Actors.Animations;
-using Actors.Health;
+using Actors.Stats;
 using Combat;
 using UnityEngine;
 
@@ -37,16 +37,21 @@ namespace Actors
         public bool TryAttack(bool magical)
         {
             if (IsLocked || Time.time < (magical ? _nextMagic : _nextMelee)) return false;
-            
+
+            if (magical && _actor.Mana != null && _actor.Mana.Current < _definition.magicCost) return false;
+
             float duration = magical ? _definition.magicDuration : _definition.meleeDuration;
             float impact = magical ? _definition.magicImpact : _definition.meleeImpact;
+
             if (!_timeline.TryStart(impact, duration, magical ? _magic : _melee)) return false;
-            
+
+            if (magical && _actor.Mana != null) _actor.Mana.TrySpend(_definition.magicCost);
+
             if (magical) _nextMagic = Time.time + _definition.magicCooldown;
             else _nextMelee = Time.time + _definition.meleeCooldown;
+
             _animationView.PlayAction(magical ? "Magic" : "Melee");
             _wasLocked = true;
-            
             return true;
         }
         
@@ -78,11 +83,22 @@ namespace Actors
         }
         
         private void OnDisable() => _timeline.Cancel();
+        
         private void OnDestroy()
         {
             if (_actor == null || _actor.Health == null) return;
             _actor.Health.Damaged -= OnDamaged;
             _actor.Health.Died -= OnDied;
+        }
+        
+        public void ResetAfterLoad()
+        {
+            _timeline.Cancel();
+            _hitUntil = 0f;
+            _nextMelee = 0f;
+            _nextMagic = 0f;
+            _wasLocked = false;
+            _animationView.ResumeLocomotion();
         }
     }
 }

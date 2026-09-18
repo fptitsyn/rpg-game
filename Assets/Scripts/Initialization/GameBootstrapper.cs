@@ -1,4 +1,6 @@
-﻿using Services;
+﻿using System.IO;
+using SaveSystem;
+using Services;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -29,7 +31,10 @@ namespace Initialization
 
             IAudioService audioService = new AudioService(audioMixer);
 
-            Services = new GameServices(audioService);
+            string savePath = Path.Combine(Application.persistentDataPath, $"save.json_{FileGameSaveRepository.CurrentSaveNumber}");
+            IGameSaveRepository saveRepository = new FileGameSaveRepository(savePath);
+            
+            Services = new GameServices(audioService, saveRepository);
         }
 
         private void Start()

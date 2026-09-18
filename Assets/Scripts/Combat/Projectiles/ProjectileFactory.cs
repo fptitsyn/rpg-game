@@ -1,5 +1,5 @@
 using Actors;
-using Actors.Health;
+using Actors.Stats;
 using UnityEngine;
 
 namespace Combat.Projectiles

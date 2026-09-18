@@ -1,6 +1,6 @@
 using System;
 
-namespace Actors.Health
+namespace Actors.Stats
 {
     public enum DamageType { Physical, Magical }
     public enum Faction { Player, Enemy }

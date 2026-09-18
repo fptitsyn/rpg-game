@@ -1,5 +1,5 @@
 using Actors;
-using Actors.Health;
+using Actors.Stats;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;

@@ -8,32 +8,32 @@ namespace Actors
         [Header("Presentation")]
         public GameObject visualPrefab;
         public RuntimeAnimatorController controller;
-        public bool legacyMonsterAnimator;
-        [Min(0.1f)] public float visualScale = 1;
-        public float visualYaw;
+        public bool monsterAnimator;
         
         [Header("Stats")]
-        [Min(1)] public float health = 100;
-        [Min(0)] public float physicalDamage = 20;
-        [Min(0)] public float magicalDamage = 25;
-        [Min(0.1f)] public float walkSpeed = 3.5f;
-        [Min(0.1f)] public float runSpeed = 6;
+        public float health = 100;
+        public float physicalDamage = 20;
+        public float magicalDamage = 25;
+        public float walkSpeed = 3.5f;
+        public float runSpeed = 6;
         
         [Header("Attacks: seconds from animation start")]
-        [Min(0.01f)] public float meleeDuration = 0.9f;
-        [Min(0)] public float meleeImpact = 0.35f;
-        [Min(0.01f)] public float magicDuration = 1;
-        [Min(0)] public float magicImpact = 0.4f;
-        [Min(0.01f)] public float meleeCooldown = 1.1f;
-        [Min(0.01f)] public float magicCooldown = 2.2f;
-        [Min(0.1f)] public float meleeReach = 2;
-        [Range(10, 180)] public float meleeArc = 110;
-        [Min(0.01f)] public float hitDuration = 0.35f;
-        [Min(0.1f)] public float deathDuration = 2.5f;
+        public float meleeDuration = 0.9f;
+        public float meleeImpact = 0.35f;
+        public float magicDuration = 1;
+        public float magicImpact = 0.4f;
+        public float meleeCooldown = 1.1f;
+        public float magicCooldown = 2.2f;
+        public float meleeReach = 2;
+        public float meleeArc = 110;
+        public float hitDuration = 0.35f;
+        public float deathDuration = 2.5f;
         
         [Header("Magic")]
-        [Min(0.1f)] public float projectileSpeed = 12;
-        [Min(0.1f)] public float projectileLifetime = 3;
+        public float maxMana = 100f;
+        public float magicCost = 20f;
+        public float projectileSpeed = 12;
+        public float projectileLifetime = 3;
         public Color projectileColor = new Color(0.2f, 0.75f, 1);
     }
 }

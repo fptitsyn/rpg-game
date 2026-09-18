@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Actors;
-using Actors.Health;
+using Actors.Stats;
 using Combat.Projectiles;
 using UnityEngine;
 

@@ -37,5 +37,11 @@ namespace Actors.Player
             actual.y = 0;
             _animationView.SetSpeed(actual.magnitude);
         }
+        
+        public void ResetMovement()
+        {
+            _desiredVelocity = Vector3.zero;
+            _verticalSpeed = 0f;
+        }
     }
 }
