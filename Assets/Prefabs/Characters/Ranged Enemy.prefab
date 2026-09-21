@@ -1994,8 +1994,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8621460458003144336}
   m_Layer: 0
-  m_Name: RangedEnemyOriginal
-  m_TagString: Untagged
+  m_Name: Ranged Enemy
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5586,7 +5586,7 @@ GameObject:
   - component: {fileID: 1721385832829756729}
   - component: {fileID: 8326309393896262326}
   m_Layer: 0
-  m_Name: Range(Clone)
+  m_Name: Range
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
