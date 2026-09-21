@@ -1,4 +1,5 @@
 using Actors.Animations;
+using Actors.Boss;
 using Actors.Enemies;
 using Actors.Stats;
 using Combat;
@@ -21,7 +22,8 @@ namespace Actors
             _camera = camera;
         }
 
-        public Combatant CreateEnemy(CharacterDefinition definition, Vector3 position, Combatant target, bool ranged)
+        public Combatant CreateEnemy(CharacterDefinition definition, Vector3 position, Combatant target, bool ranged,
+            EnemyMode enemyMode)
         {
             Combatant actor = Create(
                 ranged ? "Ranged enemy" : "Melee enemy",
@@ -29,31 +31,19 @@ namespace Actors
                 position,
                 Faction.Enemy,
                 out ActorCombat combat,
-                out CharacterAnimation animation);
+                out CharacterAnimation animation
+            );
 
-            CapsuleCollider capsule = actor.gameObject.AddComponent<CapsuleCollider>();
-
-            capsule.height = 1.8f;
-            capsule.center = Vector3.up * 0.9f;
-            capsule.radius = 0.35f;
-
-            NavMeshAgent agent = actor.gameObject.AddComponent<NavMeshAgent>();
-
-            agent.height = 1.8f;
-            agent.radius = 0.4f;
-            agent.speed = definition.walkSpeed;
-            agent.acceleration = 18;
-            agent.angularSpeed = 600;
-
-            EnemyBrain brain = actor.gameObject.AddComponent<EnemyBrain>();
-            brain.Initialize(actor, target, agent, combat, animation, ranged, definition.meleeReach);
+            EnemyBrain enemyBrain = actor.gameObject.AddComponent<EnemyBrain>();
+            enemyBrain.Initialize(actor, target, combat, animation, definition, enemyMode, ranged);
             
             return actor;
         }
 
         private Combatant Create(
             string objectName, CharacterDefinition definition, Vector3 position,
-            Faction faction, out ActorCombat combat, out CharacterAnimation animation)
+            Faction faction, out ActorCombat combat, out CharacterAnimation animation
+        )
         {
             GameObject root = new GameObject(objectName);
 
@@ -85,6 +75,17 @@ namespace Actors
                 healthBar.Bind(actor.Health, _camera);
             }
 
+            return actor;
+        }
+        
+        public Combatant CreateBoss(CharacterDefinition definition, Vector3 position, Combatant target, EnemyMode enemyMode)
+        {
+            Combatant actor = Create("Boss", definition, position, Faction.Enemy, out ActorCombat combat,
+                out CharacterAnimation animation);
+        
+            BossBrain bossBrain = actor.gameObject.AddComponent<BossBrain>();
+            bossBrain.Initialize(actor, target, combat, animation, definition, enemyMode);
+        
             return actor;
         }
     }

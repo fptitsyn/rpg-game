@@ -6,7 +6,7 @@ namespace Actors.Animations
     public interface ICharacterAnimation
     {
         void SetSpeed(float speed);
-        void PlayAction(string state);
+        void PlayAction(string state, float speedMultiplier = 1f);
         void ResumeLocomotion();
     }
 
@@ -39,12 +39,12 @@ namespace Actors.Animations
             _animator.SetFloat(SpeedHash, _action ? 0f : normalizedSpeed, 0.1f, Time.deltaTime);
         }
 
-        public void PlayAction(string state)
+        public void PlayAction(string state, float speedMultiplier = 1f)
         {
             _action = true;
             _animator.SetFloat(SpeedHash, 0f);
 
-            float duration = GetDuration(state);
+            float duration = GetDuration(state) / speedMultiplier;
             float animationSpeed = _clips[state].length / Mathf.Max(0.01f, duration);
 
             _animator.SetFloat(ActionSpeedHash, animationSpeed);

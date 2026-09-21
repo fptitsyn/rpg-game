@@ -1,45 +1,46 @@
-using Actors.Animations;
-using Actors.Enemies.States;
+﻿using Actors.Animations;
+using Actors.Boss.States;
+using Actors.Enemies;
 using Actors.Stats;
-using Combat;
-using StateMachine;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Actors.Enemies
+namespace Actors.Boss
 {
-    public sealed class EnemyBrain : MonoBehaviour
+    public sealed class BossBrain : MonoBehaviour
     {
         private Combatant _actor;
         private Combatant _target;
         private NavMeshAgent _agent;
         private ICharacterAnimation _animation;
-        private EnemyContext _context;
+        private BossContext _context;
         private StateMachine.StateMachine _stateMachine;
 
         public string CurrentState => _stateMachine.CurrentStateName;
 
-        public void Initialize(Combatant owner, Combatant target, ActorCombat combat,
-            ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode, bool ranged)
+        public void Initialize(Combatant owner, Combatant target,  ActorCombat combat,
+            ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode)
         {
             _actor = owner;
             _target = target;
             _animation = anim;
             _agent = GetComponent<NavMeshAgent>();
 
-            _context = new EnemyContext(transform, owner, target, _agent, combat, definition, mode, ranged);
+            _context = new BossContext(transform, owner, target, _agent, combat, definition, mode);
             _stateMachine = new StateMachine.StateMachine();
 
-            _stateMachine.Add(new EnemyIdleState(_context, _stateMachine));
-            _stateMachine.Add(new EnemyAggressionState(_context, _stateMachine));
-            _stateMachine.Add(new EnemyAttackState(_context, _stateMachine));
-            _stateMachine.Add(new EnemyFleeState(_context, _stateMachine));
-            _stateMachine.Add(new EnemyDeadState(_context, _stateMachine));
+            _stateMachine.Add(new BossIdleState(_context, _stateMachine));
+            _stateMachine.Add(new BossAggressionState(_context, _stateMachine));
+            _stateMachine.Add(new BossChaseState(_context, _stateMachine));
+            _stateMachine.Add(new BossAttackState(_context, _stateMachine));
+            _stateMachine.Add(new BossStrongAttackState(_context, _stateMachine));
+            _stateMachine.Add(new BossRepositionState(_context, _stateMachine));
+            _stateMachine.Add(new BossDeadState(_context, _stateMachine));
 
             _actor.Health.Damaged += OnDamaged;
             _actor.Health.Died += OnDied;
 
-            _stateMachine.Change<EnemyIdleState>();
+            _stateMachine.Change<BossIdleState>();
         }
 
         private void Update()
@@ -68,7 +69,7 @@ namespace Actors.Enemies
 
         private void OnDied()
         {
-            _stateMachine.Change<EnemyDeadState>();
+            _stateMachine.Change<BossDeadState>();
             _animation.SetSpeed(0f);
         }
 

@@ -5,7 +5,6 @@ using CameraScripts;
 using Combat.Projectiles;
 using SaveSystem;
 using UI.InGame;
-using UI.Menu;
 using UI.Menu.Pause;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,26 +15,27 @@ namespace Initialization
     public sealed class GameplayBootstrapper : MonoBehaviour
     {
         [Header("Player")]
-        [SerializeField] PlayerSetup player;
+        [SerializeField] private PlayerSetup player;
 
         [Header("Enemies")]
-        [SerializeField] CharacterDefinition meleeEnemy;
-        [SerializeField] CharacterDefinition rangedEnemy;
+        [SerializeField] private CharacterDefinition meleeEnemy;
+        [SerializeField] private CharacterDefinition rangedEnemy;
+        [SerializeField] private EnemyMode enemyMode;
 
         [Header("Scene")]
-        [SerializeField] Material projectileMaterial;
-        [SerializeField] Camera gameCamera;
-        [SerializeField] OrbitCamera orbitCamera;
+        [SerializeField] private Material projectileMaterial;
+        [SerializeField] private Camera gameCamera;
+        [SerializeField] private OrbitCamera orbitCamera;
 
         [Header("Input")]
-        [SerializeField] InputActionAsset inputActions;
+        [SerializeField] private InputActionAsset inputActions;
 
         [Header("UI")]
-        [SerializeField] GameHud gameHud;
-        [SerializeField] HealthBar playerHealthBar;
+        [SerializeField] private GameHud gameHud;
+        [SerializeField] private HealthBar playerHealthBar;
         
-        [SerializeField] string mainMenuScene = "MainMenu";
-        [SerializeField] PauseMenu pauseMenu;
+        [SerializeField] private string mainMenuScene = "MainMenu";
+        [SerializeField] private PauseMenu pauseMenu;
 
         private CursorLockMode _previousCursorLock;
         private bool _previousCursorVisibility;
@@ -60,7 +60,7 @@ namespace Initialization
             gameHud.Bind(player.Combatant.Health, player.Combat);
 
             ActorFactory actorFactory = new ActorFactory(projectileFactory, gameCamera);
-            EnemySpawner enemySpawner = new EnemySpawner(actorFactory);
+            EnemySpawner enemySpawner = new EnemySpawner(actorFactory, enemyMode);
             enemySpawner.Spawn(meleeEnemy, player.Combatant, false, Random.Range(2, 4));
             enemySpawner.Spawn(rangedEnemy, player.Combatant, true, Random.Range(2, 4));
 

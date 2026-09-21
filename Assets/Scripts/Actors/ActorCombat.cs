@@ -34,23 +34,34 @@ namespace Actors
             _actor.Health.Died += OnDied;
         }
         
-        public bool TryAttack(bool magical)
+        public bool TryAttack(bool magical, float speedMultiplier = 1f)
         {
-            if (IsLocked || Time.time < (magical ? _nextMagic : _nextMelee)) return false;
+            if (magical && _actor.Mana != null && _actor.Mana.Current < _definition.magicCost)
+                return false;
 
-            if (magical && _actor.Mana != null && _actor.Mana.Current < _definition.magicCost) return false;
+            if (IsLocked || Time.time < (magical ? _nextMagic : _nextMelee))
+                return false;
 
-            float duration = magical ? _definition.magicDuration : _definition.meleeDuration;
-            float impact = magical ? _definition.magicImpact : _definition.meleeImpact;
+            float duration = (magical ? _definition.magicDuration : _definition.meleeDuration) / speedMultiplier;
+            float impact = (magical ? _definition.magicImpact : _definition.meleeImpact) / speedMultiplier;
+            float cooldown = (magical ? _definition.magicCooldown : _definition.meleeCooldown) / speedMultiplier;
 
-            if (!_timeline.TryStart(impact, duration, magical ? _magic : _melee)) return false;
+            if (!_timeline.TryStart(impact, duration, magical ? _magic : _melee))
+                return false;
 
-            if (magical && _actor.Mana != null) _actor.Mana.TrySpend(_definition.magicCost);
+            if (magical)
+            {
+                _nextMagic = Time.time + cooldown;
 
-            if (magical) _nextMagic = Time.time + _definition.magicCooldown;
-            else _nextMelee = Time.time + _definition.meleeCooldown;
+                if (_actor.Mana != null)
+                    _actor.Mana.TrySpend(_definition.magicCost);
+            }
+            else
+            {
+                _nextMelee = Time.time + cooldown;
+            }
 
-            _animationView.PlayAction(magical ? "Magic" : "Melee");
+            _animationView.PlayAction(magical ? "Magic" : "Melee", speedMultiplier);
             _wasLocked = true;
             return true;
         }

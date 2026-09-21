@@ -9,7 +9,14 @@ namespace Actors.Enemies
     {
         private readonly ActorFactory _factory;
         private readonly List<Vector3> _occupied = new();
-        public EnemySpawner(ActorFactory factory) { _factory = factory; }
+        private readonly EnemyMode _enemyMode;
+        
+        public EnemySpawner(ActorFactory factory, EnemyMode enemyMode = EnemyMode.Normal)
+        {
+            _factory = factory;
+            _enemyMode = enemyMode;
+        }
+        
         public void Spawn(CharacterDefinition settings, Combatant player, bool ranged, int count)
         {
             for (int i = 0; i < count; i++)
@@ -39,7 +46,8 @@ namespace Actors.Enemies
                     {
                         continue;
                     }
-                    _factory.CreateEnemy(settings, point, player, ranged);
+                    
+                    _factory.CreateEnemy(settings, point, player, ranged, _enemyMode);
                     _occupied.Add(point);
                     spawned = true;
                     break;
