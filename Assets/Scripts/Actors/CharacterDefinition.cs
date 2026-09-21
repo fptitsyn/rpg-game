@@ -8,7 +8,6 @@ namespace Actors
         [Header("Presentation")]
         public GameObject visualPrefab;
         public RuntimeAnimatorController controller;
-        public bool monsterAnimator;
         
         [Header("Stats")]
         public float health = 100;

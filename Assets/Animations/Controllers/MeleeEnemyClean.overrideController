@@ -10,16 +10,16 @@ AnimatorOverrideController:
   m_Controller: {fileID: 9100000, guid: e2af95cd9de979f43a8342bd6aa14903, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 262c92659db78434d9a98cf07a6b3e75, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 4fb9e1815fd6b414c9f29c1c8898046f, type: 2}
+    m_OverrideClip: {fileID: 1942785488916213143, guid: dab15ef5f6c781b40894c52c4c9938d0, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 23a376b17242280419d4f33cd07991f1, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 2e29566a935e0ae49860cf63e0a22983, type: 2}
+    m_OverrideClip: {fileID: 1942785488916213143, guid: 77edd185276d64a4791549ac2266642e, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 797de01e6849d48479a4b9c884d210e0, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 73ac75b963df31f409f931788b5210b9, type: 2}
+    m_OverrideClip: {fileID: 1942785488916213143, guid: df45eaf8e6125d74d88e4d605fdf7a40, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 4fd6c8a63a6678b45ba34b5a5c8f8373, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: d142383ae75d1774fa0b8aaa8d3ddbc2, type: 2}
+    m_OverrideClip: {fileID: 1942785488916213143, guid: df45eaf8e6125d74d88e4d605fdf7a40, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 83dcc78e8b759b44b91bc8ff1b72d034, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 980c4986ac236c04286d983eca00109e, type: 2}
+    m_OverrideClip: {fileID: 764570185589334423, guid: 1621ac1817ce8ec4e8f03177b169b81a, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: b3aac62115708294c8cfbd78205e3089, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: ffea44ff8111538418587318638e20e8, type: 2}
+    m_OverrideClip: {fileID: 764570185589334423, guid: 1621ac1817ce8ec4e8f03177b169b81a, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: e9079cfab7e2e5041b8a84bc668dfcf5, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: c889beb5c21267940ac1999e27a1a3a8, type: 2}
+    m_OverrideClip: {fileID: 1942785488916213143, guid: d47b04075336bf94fb3053d613517fc5, type: 3}

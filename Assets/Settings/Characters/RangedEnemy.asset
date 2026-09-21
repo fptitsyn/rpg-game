@@ -14,9 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualPrefab: {fileID: 2858740891376179160, guid: 97968c2440c1a804abf88a7271717544, type: 3}
   controller: {fileID: 22100000, guid: 7337673bc91c5be4fa942b0ac65ab017, type: 2}
-  legacyMonsterAnimator: 1
-  visualScale: 1
-  visualYaw: 0
   health: 55
   physicalDamage: 0
   magicalDamage: 15
@@ -32,6 +29,8 @@ MonoBehaviour:
   meleeArc: 110
   hitDuration: 0.35
   deathDuration: 1.2333333
+  maxMana: 100
+  magicCost: 20
   projectileSpeed: 12
   projectileLifetime: 3
   projectileColor: {r: 1, g: 0.25, b: 0.7, a: 1}

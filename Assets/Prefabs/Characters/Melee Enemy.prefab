@@ -1477,7 +1477,7 @@ GameObject:
   - component: {fileID: 1806944234381161445}
   - component: {fileID: 7925079133254677210}
   m_Layer: 0
-  m_Name: Melee(Clone)
+  m_Name: Melee
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

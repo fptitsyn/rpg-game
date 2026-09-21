@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Actors.Animations
@@ -11,86 +12,84 @@ namespace Actors.Animations
 
     public sealed class CharacterAnimation : MonoBehaviour, ICharacterAnimation
     {
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
+        private static readonly int ActionSpeedHash = Animator.StringToHash("ActionSpeed");
+
+        private readonly Dictionary<string, AnimationClip> _clips = new();
+        private readonly List<KeyValuePair<AnimationClip, AnimationClip>> _overrides = new();
+
         private Animator _animator;
-        private bool _legacy;
         private CharacterDefinition _definition;
         private bool _action;
-        private static readonly int Speed = Animator.StringToHash("Speed");
-        private static readonly int Walking = Animator.StringToHash("Walking");
-        private static readonly int ActionSpeed = Animator.StringToHash("ActionSpeed");
 
-        public void Initialize(Animator target, CharacterDefinition settings)
+        public void Initialize(Animator animator, CharacterDefinition definition)
         {
-            _animator = target;
-            _definition = settings;
-            _legacy = settings.monsterAnimator;
+            _animator = animator;
+            _definition = definition;
+
             _animator.applyRootMotion = false;
             _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+
+            CacheClips(definition.controller);
         }
-        
+
         public void SetSpeed(float speed)
         {
-            if (_legacy)
-            {
-                if (Has("Walking", AnimatorControllerParameterType.Bool))
-                    _animator.SetBool(Walking, !_action && speed > 0.1f);
-            }
-            else _animator.SetFloat(Speed, _action ? 0 : speed, 0.1f, Time.deltaTime);
+            float normalizedSpeed = Mathf.Clamp01(speed / _definition.runSpeed);
+            _animator.SetFloat(SpeedHash, _action ? 0f : normalizedSpeed, 0.1f, Time.deltaTime);
         }
-        
+
         public void PlayAction(string state)
         {
             _action = true;
-            if (!_legacy)
-            {
-                float duration = state switch
-                {
-                    "Hit" => _definition.hitDuration,
-                    "Magic" => _definition.magicDuration,
-                    _ => _definition.meleeDuration
-                };
-                float rate = 1;
-                if (state != "Death")
-                    foreach (var clip in _animator.runtimeAnimatorController.animationClips)
-                    {
-                        if (clip.name == state)
-                        {
-                            rate = clip.length / Mathf.Max(0.01f, duration);
-                            break;
-                        }
-                    }
-                
-                _animator.SetFloat(ActionSpeed, rate);
-                _animator.CrossFadeInFixedTime("Base Layer." + state, 0.06f, 0, 0);
-                return;
-            }
-            
-            string parameter = state switch
-            {
-                "Hit" => "TakeDamage",
-                "Death" => "Death",
-                _ => "Attack"
-            };
-            
-            if (Has("Walking", AnimatorControllerParameterType.Bool)) _animator.SetBool(Walking, false);
-            foreach (var p in _animator.parameters)
-            {
-                if (p.type == AnimatorControllerParameterType.Trigger) _animator.ResetTrigger(p.nameHash);
-            }
-            if (Has(parameter, AnimatorControllerParameterType.Trigger)) _animator.SetTrigger(parameter);
+            _animator.SetFloat(SpeedHash, 0f);
+
+            float duration = GetDuration(state);
+            float animationSpeed = _clips[state].length / Mathf.Max(0.01f, duration);
+
+            _animator.SetFloat(ActionSpeedHash, animationSpeed);
+            _animator.CrossFadeInFixedTime("Base Layer." + state, 0.06f, 0, 0f);
         }
-        
+
         public void ResumeLocomotion()
         {
-            if (!_action) return;
+            if (!_action)
+                return;
+
             _action = false;
-            if (!_legacy) _animator.CrossFadeInFixedTime("Base Layer.Locomotion", 0.1f, 0, 0);
+            _animator.SetFloat(ActionSpeedHash, 1f);
+            _animator.CrossFadeInFixedTime("Base Layer.Locomotion", 0.1f, 0, 0f);
         }
-        
-        private bool Has(string nameToCheck, AnimatorControllerParameterType type)
+
+        private void CacheClips(RuntimeAnimatorController controller)
         {
-            foreach (var p in _animator.parameters) if (p.name == nameToCheck && p.type == type) return true;
-            return false;
+            _clips.Clear();
+
+            if (controller is AnimatorOverrideController overrideController)
+            {
+                _overrides.Clear();
+                overrideController.GetOverrides(_overrides);
+
+                foreach (KeyValuePair<AnimationClip, AnimationClip> pair in _overrides)
+                    _clips[pair.Key.name] = pair.Value;
+
+                return;
+            }
+
+            foreach (AnimationClip clip in controller.animationClips)
+                _clips[clip.name] = clip;
+        }
+
+        private float GetDuration(string state)
+        {
+            return state switch
+            {
+                "Melee" => _definition.meleeDuration,
+                "Magic" => _definition.magicDuration,
+                "Hit" => _definition.hitDuration,
+                "Death" => _definition.deathDuration,
+                _ => 1f
+            };
         }
     }
 }

@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: MeleeEnemy
   m_EditorClassIdentifier: 
   visualPrefab: {fileID: 3517358742485809428, guid: 5926bf47059af954a826a3cfa1aa487a, type: 3}
-  controller: {fileID: 9100000, guid: 810400793e363f34c979f22f76a9ae54, type: 2}
-  legacyMonsterAnimator: 0
-  visualScale: 1
-  visualYaw: 0
+  controller: {fileID: 22100000, guid: b25dd3f1f2dccee49a1e2929f614465f, type: 2}
   health: 70
   physicalDamage: 12
   magicalDamage: 0
@@ -32,6 +29,8 @@ MonoBehaviour:
   meleeArc: 110
   hitDuration: 0.35
   deathDuration: 1.2333333
+  maxMana: 100
+  magicCost: 20
   projectileSpeed: 12
   projectileLifetime: 3
   projectileColor: {r: 0.2, g: 0.75, b: 1, a: 1}
