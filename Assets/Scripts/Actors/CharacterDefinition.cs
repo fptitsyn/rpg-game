@@ -31,6 +31,7 @@ namespace Actors
         [Header("Magic")]
         public float maxMana = 100f;
         public float magicCost = 20f;
+        public float manaRegenPerSec = 5f;
         public float projectileSpeed = 12;
         public float projectileLifetime = 3;
         public Color projectileColor = new Color(0.2f, 0.75f, 1);

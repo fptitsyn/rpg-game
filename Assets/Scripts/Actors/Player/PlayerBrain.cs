@@ -53,6 +53,8 @@ namespace Actors.Player
             if (!_actor.IsAlive)
                 return;
 
+            _actor.Mana.Regenerate(_definition.manaRegenPerSec * Time.deltaTime);
+            
             bool attackPressed = _attackAction.WasPressedThisFrame();
             bool magicPressed = _magicAction.WasPressedThisFrame();
 

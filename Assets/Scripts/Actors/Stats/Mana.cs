@@ -25,6 +25,15 @@ namespace Actors.Stats
             return true;
         }
 
+        public void Regenerate(float amount)
+        {
+            if (Current >= Maximum)
+                return;
+
+            Current = Math.Min(Maximum, Current + amount);
+            Changed?.Invoke(Current, Maximum);
+        }
+        
         public void Restore(float value)
         {
             Current = Mathf.Clamp(value, 0, Maximum);

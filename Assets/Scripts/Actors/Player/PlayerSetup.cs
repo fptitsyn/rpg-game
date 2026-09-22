@@ -1,5 +1,4 @@
-﻿using System;
-using Actors.Animations;
+﻿using Actors.Animations;
 using Actors.Stats;
 using CameraScripts;
 using Combat;
