@@ -1,0 +1,68 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 PIPES\
+\
+- Based on 5m x 5m grid\
+- Insides need to have visible faces (in case a game is made where you crawl through them as a mouse, for instance), but should be a sub-mesh of the object, so that they can be turned off if they won\'92t be visible.\
+- One full UV map is 5m long, so please use the full width for the 5m long pieces.  Shorter pieces of the same type (straight, for instance) can use the same UV map.\
+- pipes should be about 1 foot in diameter, with the diameter of the metal sides about 2 inches each.  Should look realistic and reasonable.\
+- we need some vertices in the long pipe, for vertex painting.  So don\'92t make it super low poly.  Ask if you need more info.\
+\
+\
+* Straight piece, 5m long\
+* Straight piece, 2.5 m long\
+* Straight piece, 2m long\
+* straight piece, 1m long\
+* straight piece, 0.5m long\
+* Sharp curved piece\
+* Medium curved piece\
+* Longer Curved Piece\
+* Y shaped piece, 1m length (connects w/ 2m long pieces to form 5m total)\
+* X shaped piece, 1m each way (connects w/ 2m long pieces to form 5m total)\
+* T shaped piece, 1m long each way\
+* T Bolt (imagine a normal bolt, but shaped as a T, which can be placed at any point on a straight pipe, and then another straight pipe into it\'92s open end)\
+* Connection Bolt\
+* End-Cap Bolt (screws on an end to close the segment off)\
+* 1m long \'93Wheel\'94 piece \'97 the wheel can turn (sub-mesh)\
+\
+BLEND SHAPES\
+I use blend shapes to allow level designers to modify the shape of objects in order to break up monotony/repetition.  Each piece is able to have it\'92s own shapes set, and by using a variety of values, every piece ends up looking completely different from the rest.  (Vertex layering is also used for this, so that two pieces side by side will have slightly different, and non-patterned, textures)\
+\
+The naming convention is *very* important, because my script exposes only the blend shapes we want developers to have access to.  *** Please ask questions if you have any!  ***\
+\
+Blend Shape Name:\
+SFB_BS_[NameOfShape][Plus|Minus]\
+\
+First section is always \'93SFB\'94 for \'93S.F. Bay Studios\'94.  The second section, \'93BS\'94 is \'93Blend Shape\'94, and the third section is the visible name.  So for the pipes it may be \'93Bend X\'94 for a bend on the X axis.  The 2nd part of the 3rd section is optional:  Plus or Minus.  We will be using these.  (If there is only one direction of a blend shape, then do not use Plus or Minus!)\
+\
+The pipe will start out straight.  And if we want a bend on the X Axis, we will have two shapes.  One is \'93Plus\'94 the other \'93Minus\'94.  The script will put these values on the same slider, so the users can only have one of them activated at a time.\
+\
+SFB_BS_BendXPlus\
+SFB_BS_BendXMinus\
+SFB_BS_BendYPlus\
+SFB_BS_BendYMinus\
+SFB_BS_BendZPlus\
+SFB_BS_BendZMinus\
+SFB_BS_SizePlus\
+SFB_BS_SizeMinus   (Refers to the size of the pipe in the middle \'97 the ends should remain the correct size so they attach seamlessly to other pipes)\
+\
+One straight pipe will likely have all 8 of those blend shapes.  When they\'92re combined in various values, a large amount of variety can be achieved.  Further, a \'93Bend\'94 doesn\'92t have to be just one bent portion. F or the longer shapes, it may be appropriate to have two bends, either in the same direction or different directions.  Creating a variety in the shapes, so that no two shapes are exactly the same, help level designers create a massive variety in the final look.  \
+\
+The names do not have to reference the object they are on, so each straight pipe can have the same names, so long as they refer to the same type of change.\
+\
+Corner pieces:  These can also have bends, so long as the ends remain in the right spot \'97 anything that is intended to connect with another piece should remain in the right spot at all times.  The size can be adjusted slightly.\
+\
+Connection bolt etc: can have width (length along pipe) shape and also size, or circumference.\
+\
+PIVOT POINTS\
+The pivot should be on the Starting End of the pipe.  (For shorter straight, if you were to line them all up on one end so that end matches, thats the \'93Starting end\'94)  In the corner.\
+\
+SCULPTING\
+There won\'92t be too much sculpting required for these.  Do not sculpt the detail of the metal.  I\'92ll take care of that when I texture it.  I do expect that the pipes and connections etc are realistic looking.\
+\
+WEIGHTED VERTEX NORMALS\
+Use this medium-poly technique whenever applicable.  If you don\'92t know about it already, look it up.  Theres plenty of resources on it.  It\'92ll help make everything look prettier.  I personally don\'92t understand it, so much as I can see the difference in the end result (And I\'92ve been told from people in AAA studios that they all use it\'85so we should too!)}

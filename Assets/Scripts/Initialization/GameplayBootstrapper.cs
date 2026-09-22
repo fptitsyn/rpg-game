@@ -15,13 +15,17 @@ namespace Initialization
     public sealed class GameplayBootstrapper : MonoBehaviour
     {
         [Header("Player")]
-        [SerializeField] private PlayerSetup player;
+        [SerializeField] private PlayerSetup playerSetup;
 
         [Header("Enemies")]
         [SerializeField] private CharacterDefinition meleeEnemy;
         [SerializeField] private CharacterDefinition rangedEnemy;
         [SerializeField] private EnemyMode enemyMode;
 
+        [Header("Boss")]
+        [SerializeField] private CharacterDefinition bossDefinition;
+        [SerializeField] private Transform bossSpawnPoint;
+        
         [Header("Scene")]
         [SerializeField] private Material projectileMaterial;
         [SerializeField] private Camera gameCamera;
@@ -42,6 +46,10 @@ namespace Initialization
 
         private PauseMenuController _pauseController;
 
+        private EnemySpawner _enemySpawner;
+        private EnemyWave _enemyWave;
+        private Combatant _player;
+
         private void Awake()
         {
             _previousCursorLock = Cursor.lockState;
@@ -50,20 +58,27 @@ namespace Initialization
             InputActionMap playerActions = inputActions.FindActionMap("Player", throwIfNotFound: true);
             ProjectileFactory projectileFactory = new ProjectileFactory(projectileMaterial);
 
-            player.Initialize(playerActions, projectileFactory, orbitCamera);
+            playerSetup.Initialize(playerActions, projectileFactory, orbitCamera);
+
+            _player = playerSetup.Combatant;
 
             IGameSaveRepository saveRepository = GameBootstrapper.Instance.Services.SaveRepository;
-            GameSaveInteractor saveInteractor = new GameSaveInteractor(saveRepository, player);
+            GameSaveInteractor saveInteractor = new GameSaveInteractor(saveRepository, playerSetup);
             _pauseController = new PauseMenuController(new PauseMenuModel(), pauseMenu, saveInteractor, OpenMainMenu);
             
-            playerHealthBar.Bind(player.Combatant.Health, gameCamera);
-            gameHud.Bind(player.Combatant.Health, player.Combat);
+            playerHealthBar.Bind(playerSetup.Combatant.Health, gameCamera);
+            gameHud.Bind(playerSetup.Combatant.Health, playerSetup.Combat);
 
             ActorFactory actorFactory = new ActorFactory(projectileFactory, gameCamera);
-            EnemySpawner enemySpawner = new EnemySpawner(actorFactory, enemyMode);
-            enemySpawner.Spawn(meleeEnemy, player.Combatant, false, Random.Range(2, 4));
-            enemySpawner.Spawn(rangedEnemy, player.Combatant, true, Random.Range(2, 4));
+            _enemySpawner = new EnemySpawner(actorFactory, enemyMode);
 
+            _enemyWave = new EnemyWave();
+            _enemyWave.AllEnemiesDead += SpawnBoss;
+            
+            _enemyWave.Add(_enemySpawner.Spawn(meleeEnemy, _player, false, Random.Range(1, 3)));
+            _enemyWave.Add(_enemySpawner.Spawn(rangedEnemy, _player, true, Random.Range(1, 3)));
+            _enemyWave.Begin();
+            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             
@@ -82,6 +97,11 @@ namespace Initialization
             
             Cursor.lockState = _previousCursorLock;
             Cursor.visible = _previousCursorVisibility;
+        }
+
+        private void SpawnBoss()
+        {
+            _enemySpawner.SpawnBoss(bossDefinition, bossSpawnPoint.position, _player, enemyMode);
         }
     }
 }

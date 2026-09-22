@@ -26,7 +26,6 @@ namespace Actors
             EnemyMode enemyMode)
         {
             Combatant actor = Create(
-                ranged ? "Ranged enemy" : "Melee enemy",
                 definition,
                 position,
                 Faction.Enemy,
@@ -40,25 +39,19 @@ namespace Actors
             return actor;
         }
 
-        private Combatant Create(
-            string objectName, CharacterDefinition definition, Vector3 position,
+        private Combatant Create(CharacterDefinition definition, Vector3 position,
             Faction faction, out ActorCombat combat, out CharacterAnimation animation
         )
         {
-            GameObject root = new GameObject(objectName);
-
-            root.layer = CombatPhysics.ActorLayer;
-            root.transform.position = position;
-
+            // GameObject root = new GameObject(objectName);
+            //
+            // root.layer = CombatPhysics.ActorLayer;
+            // root.transform.position = position;
+            GameObject root = Object.Instantiate(definition.visualPrefab, position, Quaternion.identity);
             Combatant actor = root.AddComponent<Combatant>();
             actor.Initialize(definition.health, faction);
-
-            GameObject visual = Object.Instantiate(definition.visualPrefab, root.transform);
-
-            visual.name = "Visual";
-            visual.transform.localPosition = Vector3.zero;
-
-            Animator animator = visual.GetComponentInChildren<Animator>();
+            
+            Animator animator = root.GetComponentInChildren<Animator>();
             animator.runtimeAnimatorController = definition.controller;
             animation = root.AddComponent<CharacterAnimation>();
             animation.Initialize(animator, definition);
@@ -68,9 +61,9 @@ namespace Actors
             combat.Initialize(actor, definition, animation, new MeleeAttack(actor, definition),
                 new MagicAttack(actor, definition, _projectiles));
 
-            HealthBar healthBar = visual.GetComponentInChildren<HealthBar>(true);
+            HealthBar healthBar = root.GetComponentInChildren<HealthBar>(true);
 
-            if (healthBar != null)
+            if (healthBar)
             {
                 healthBar.Bind(actor.Health, _camera);
             }
@@ -80,7 +73,7 @@ namespace Actors
         
         public Combatant CreateBoss(CharacterDefinition definition, Vector3 position, Combatant target, EnemyMode enemyMode)
         {
-            Combatant actor = Create("Boss", definition, position, Faction.Enemy, out ActorCombat combat,
+            Combatant actor = Create(definition, position, Faction.Enemy, out ActorCombat combat,
                 out CharacterAnimation animation);
         
             BossBrain bossBrain = actor.gameObject.AddComponent<BossBrain>();

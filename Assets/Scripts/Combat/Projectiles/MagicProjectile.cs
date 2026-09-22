@@ -29,7 +29,6 @@ namespace Combat.Projectiles
             }
             
             Vector3 origin = transform.position;
-            // SphereCast does not report an initial overlap; handle it separately.
             foreach (var coll in Physics.OverlapSphere(origin, Radius,
                 CombatPhysics.CombatMask, QueryTriggerInteraction.Ignore))
             {

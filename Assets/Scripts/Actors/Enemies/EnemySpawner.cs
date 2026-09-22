@@ -17,8 +17,10 @@ namespace Actors.Enemies
             _enemyMode = enemyMode;
         }
         
-        public void Spawn(CharacterDefinition settings, Combatant player, bool ranged, int count)
+        public List<Combatant> Spawn(CharacterDefinition settings, Combatant player, bool ranged, int count)
         {
+            List<Combatant> spawnedEnemies = new();
+            
             for (int i = 0; i < count; i++)
             {
                 bool spawned = false;
@@ -47,7 +49,9 @@ namespace Actors.Enemies
                         continue;
                     }
                     
-                    _factory.CreateEnemy(settings, point, player, ranged, _enemyMode);
+                    Combatant enemy = _factory.CreateEnemy(settings, point, player, ranged, _enemyMode);
+                    
+                    spawnedEnemies.Add(enemy);
                     _occupied.Add(point);
                     spawned = true;
                     break;
@@ -55,6 +59,13 @@ namespace Actors.Enemies
                 
                 if (!spawned) Debug.LogError("Game: no reachable spawn point for enemy " + i);
             }
+
+            return spawnedEnemies;
+        }
+
+        public Combatant SpawnBoss(CharacterDefinition definition, Vector3 position, Combatant player, EnemyMode mode)
+        {
+            return _factory.CreateBoss(definition, position, player, mode);
         }
     }
 }

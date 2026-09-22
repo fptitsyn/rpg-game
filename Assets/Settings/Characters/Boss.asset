@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d1c82899035e96995edd96ada7a9d7, type: 3}
+  m_Name: Boss
+  m_EditorClassIdentifier: 
+  visualPrefab: {fileID: 1537796346829984, guid: 361942b45b1d24e70961ffe6c0c45cae, type: 3}
+  controller: {fileID: 22100000, guid: 222840a18bdcda64ab6d6bddb4a94a8a, type: 2}
+  health: 500
+  physicalDamage: 30
+  magicalDamage: 60
+  walkSpeed: 3.5
+  runSpeed: 6
+  meleeDuration: 0.9
+  meleeImpact: 0.35
+  magicDuration: 1
+  magicImpact: 0.4
+  meleeCooldown: 1.5
+  magicCooldown: 5
+  meleeReach: 2.5
+  meleeArc: 110
+  hitDuration: 0.35
+  deathDuration: 2.5
+  maxMana: 100
+  magicCost: 20
+  projectileSpeed: 12
+  projectileLifetime: 3
+  projectileColor: {r: 0.2, g: 0.75, b: 1, a: 1}
+  detectionDistance: 12
+  loseTargetDistance: 20
+  fleeHealthRatio: 0.25
+  fleeDistance: 6
+  rangedMinDistance: 4
+  rangedMaxDistance: 9
+  bossStrongAttackRange: 8
+  bossStrongAttackCooldown: 6
+  bossRepositionDuration: 0.75
+  enragedHealthRatio: 0.5
+  enragedAttackSpeed: 1.5

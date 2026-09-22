@@ -1842,6 +1842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 797891035}
   - component: {fileID: 797891034}
+  - component: {fileID: 797891036}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -1908,6 +1909,38 @@ Transform:
   - {fileID: 651290523}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &797891036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797891033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: -1372625422
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 1
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 35e7f116842004f4bab6fc915ffe5191, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &808029168
 GameObject:
   m_ObjectHideFlags: 0
@@ -2772,9 +2805,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3f7871e4949507190d8fdcf7368d8c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 31193895}
+  playerSetup: {fileID: 31193895}
   meleeEnemy: {fileID: 11400000, guid: 8ec2328940cd3c24e9a2d729febbba09, type: 2}
   rangedEnemy: {fileID: 11400000, guid: c6297ff448d65604c9a4adba8aa3fbaa, type: 2}
+  enemyMode: 0
+  bossDefinition: {fileID: 11400000, guid: 9a713283eef55aa4ebfb28f172094b7d, type: 2}
+  bossSpawnPoint: {fileID: 1581901004}
   projectileMaterial: {fileID: 2100000, guid: 8c0c193a80c1ad94c8670888d22bb987, type: 2}
   gameCamera: {fileID: 1061242130}
   orbitCamera: {fileID: 1061242134}
@@ -3239,6 +3275,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529827571}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1581901003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1581901004}
+  m_Layer: 0
+  m_Name: BossSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1581901004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581901003}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1596441950
 GameObject:
   m_ObjectHideFlags: 0
@@ -3783,8 +3850,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI.GameHud, Assembly-CSharp
+      - m_Target: {fileID: 1224602873}
+        m_TargetAssemblyTypeName: UI.InGame.GameHud, Assembly-CSharp
         m_MethodName: Restart
         m_Mode: 1
         m_Arguments:
@@ -6719,3 +6786,4 @@ SceneRoots:
   - {fileID: 8736712}
   - {fileID: 31193894}
   - {fileID: 2060687445}
+  - {fileID: 1581901004}

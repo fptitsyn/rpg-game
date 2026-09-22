@@ -1,0 +1,24 @@
+http://www.InfinityPBR.com
+
+Devils Pack PBR
+
+--"Demo" Version--
+This version is fully set up for particles and such.  In many cases you may find it easier to work with this instead of the main model.  It also has the game-ready materials attached.
+
+Do not use the .sbsar files in a game environment, as it will slow down your system and perhaps crash it.  The .sbsar files are meant for texutre customization only.
+
+--Humanoid Animations--
+I’ve created a 2nd version of the “Devils” model, called “Devils Humanoid”.  The animations were designed to work as Humanoid, however the Devil isn’t 100% a humanoid model.  His hooves have an extra joint above them — in essence, the hoof is his toes (similar to a horse, actually), and that first vertical part is his foot.
+
+If you plan on using other Humanoid animations with the Devil, please use the “Devils Humanoid” model.  Otherwise, use the “Devils” model.
+
+If you want to use the Devils animations on other humanoids, please use the animations from the “Devils Humanoid” model, as the other one will not work with other humanoids.
+
+In either case, using other animations on the Devil or the Devil Humanoid animations on others, please pay attention to the way the feet look, as they will likely not be perfect.  Using avatar masks and animation layers may be the most ideal way of setting up that functionality.
+
+--LODs--
+The Devil has a lot of parts and a lot of triangles for those parts.  Because of this, being smart about which wardrobe you use and which you do not is important.
+
+LODs are provided, and can be used to lower the polygon count.  However, if you're using this for mobile, theres a good chance things like fur or chainmail won't even be seen.  You may also want to remove the leather armor under the main metal armor as well.
+
+Doing this will drastically cut down on the number of polygons.
