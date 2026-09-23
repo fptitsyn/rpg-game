@@ -15,9 +15,14 @@ namespace Actors.Boss.States
 
         public override void Enter()
         {
-            _attackStarted = false;
-            _attackAnimation = Random.value < 0.5f ? AttackAnimation.Attack1 : AttackAnimation.Attack2;
             Context.Stop();
+            Context.FaceTargetImmediately();
+
+            AttackAnimation animation = Random.value < 0.5f
+                ? AttackAnimation.Attack1
+                : AttackAnimation.Attack2;
+
+            Context.Combat.TryAttack(false, animation, Context.AttackSpeedMultiplier);
         }
 
         public override void Tick()

@@ -70,37 +70,40 @@ namespace Actors
         }
 
         public Combatant CreateBoss(CharacterDefinition definition, Vector3 position, Combatant target,
-            WeaponDefinition weapon, ElementDefinition element, EnemyMode enemyMode)
+            WeaponDefinition meleeWeapon, ElementDefinition element, EnemyMode enemyMode)
         {
-            Combatant actor = Create(definition, position, Faction.Enemy, out ActorCombat combat,
-                out CharacterAnimation animation);
+            Combatant actor = Create(
+                definition,
+                position,
+                Faction.Enemy,
+                out ActorCombat combat,
+                out CharacterAnimation animation
+            );
 
-            WeaponEffectDefinition effect = element.GetEffect(weapon.type);
-            WeaponView weaponView = EquipWeapon(actor, weapon, effect);
+            WeaponEffectDefinition meleeEffect = element.meleeEffect;
+            WeaponEffectDefinition rangedEffect = element.rangedEffect;
 
-            float primaryDamage = weapon.damageMultiplier * element.damageMultiplier;
-            float strongDamage = primaryDamage * weapon.strongDamageMultiplier;
+            WeaponView weaponView = EquipWeapon(actor, meleeWeapon, meleeEffect);
 
-            IAttackEffect primaryAttack;
-            IAttackEffect strongAttack;
+            IAttackEffect meleeAttack = new MeleeAttack(
+                actor,
+                definition,
+                meleeWeapon.damageMultiplier * element.damageMultiplier,
+                meleeWeapon.rangeMultiplier,
+                weaponView
+            );
 
-            if (weapon.type == WeaponType.Melee)
-            {
-                primaryAttack = new MeleeAttack(actor, definition, primaryDamage, weapon.rangeMultiplier, weaponView);
-                strongAttack = new MeleeAttack(actor, definition, strongDamage, weapon.rangeMultiplier, weaponView);
-            }
-            else
-            {
-                primaryAttack = new MagicAttack(actor, definition, _projectiles, primaryDamage,
-                    weapon.projectileSpeedMultiplier, weaponView.Color, weaponView.ProjectileEffect, weaponView);
+            IAttackEffect magicAttack = new MagicAttack(
+                actor,
+                definition,
+                _projectiles,
+                element.damageMultiplier,
+                1f,
+                null,
+                rangedEffect.projectileEffect
+            );
 
-                strongAttack = new MagicAttack(actor, definition, _projectiles, strongDamage,
-                    weapon.projectileSpeedMultiplier, weaponView.Color, weaponView.ProjectileEffect, weaponView);
-            }
-
-            combat.Initialize(actor, definition, animation, primaryAttack, strongAttack);
-
-            bool ranged = weapon.type == WeaponType.Ranged;
+            combat.Initialize(actor, definition, animation, meleeAttack, magicAttack);
 
             BossBrain bossBrain = actor.gameObject.AddComponent<BossBrain>();
             bossBrain.Initialize(actor, target, combat, animation, definition, enemyMode);
@@ -132,8 +135,7 @@ namespace Actors
             return actor;
         }
 
-        private WeaponView EquipWeapon(Combatant actor, WeaponDefinition weapon,
-            WeaponEffectDefinition effect)
+        private WeaponView EquipWeapon(Combatant actor, WeaponDefinition weapon, WeaponEffectDefinition effect)
         {
             WeaponSocket socket = actor.GetComponentInChildren<WeaponSocket>();
             GameObject weaponObject = Object.Instantiate(weapon.visualPrefab, socket.transform);

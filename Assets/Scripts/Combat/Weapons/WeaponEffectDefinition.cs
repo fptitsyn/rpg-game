@@ -6,7 +6,7 @@ namespace Combat.Weapons
     [Serializable]
     public class WeaponEffectDefinition
     {
-        public Color color = Color.white;
+        // public Color color = Color.white;
         public AudioClip attackSound;
         public GameObject attackEffect;
         public GameObject projectileEffect;

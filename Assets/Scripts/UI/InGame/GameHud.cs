@@ -3,13 +3,11 @@ using Actors.Stats;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace UI.InGame
 {
     public sealed class GameHud : MonoBehaviour
     {
-        [SerializeField] private Image magicCooldownFill;
         [SerializeField] private TMP_Text magicCooldownText;
         [SerializeField] private GameObject deathPanel;
 
@@ -45,12 +43,6 @@ namespace UI.InGame
             }
 
             float remaining = _playerCombat.MagicRemaining;
-            float cooldown = _playerCombat.MagicCooldown;
-
-            if (magicCooldownFill)
-            {
-                magicCooldownFill.fillAmount = cooldown > 0 ? remaining / cooldown : 0;
-            }
 
             if (magicCooldownText)
             {

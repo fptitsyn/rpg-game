@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d3b124db69e4f6b95f09355ddaee473, type: 3}
-  m_Name: Sword
+  m_Name: BossSword
   m_EditorClassIdentifier: 
   type: 0
-  visualPrefab: {fileID: 100000, guid: 26a2d4848f1d51a4f88dd2de4650b222, type: 3}
+  visualPrefab: {fileID: 2586950148996202727, guid: c2903637b281f9e46b277e0ffbfff767, type: 3}
   defaultEffect:
     color: {r: 1, g: 1, b: 1, a: 1}
     attackSound: {fileID: 0}
     attackEffect: {fileID: 0}
     projectileEffect: {fileID: 0}
-  damageMultiplier: 1.5
+  damageMultiplier: 1.75
   strongDamageMultiplier: 1.75
-  rangeMultiplier: 1.2
+  rangeMultiplier: 1
   projectileSpeedMultiplier: 1

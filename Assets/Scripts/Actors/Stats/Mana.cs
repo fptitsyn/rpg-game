@@ -8,7 +8,7 @@ namespace Actors.Stats
         public float Maximum { get; }
         public float Current { get; private set; }
         
-        public event Action<float, float> Changed;
+        public event Action Changed;
 
         public Mana(float maximum)
         {
@@ -21,7 +21,7 @@ namespace Actors.Stats
             if (Current < amount) return false;
 
             Current -= amount;
-            Changed?.Invoke(Current, Maximum);
+            Changed?.Invoke();
             return true;
         }
 
@@ -31,13 +31,13 @@ namespace Actors.Stats
                 return;
 
             Current = Math.Min(Maximum, Current + amount);
-            Changed?.Invoke(Current, Maximum);
+            Changed?.Invoke();
         }
         
         public void Restore(float value)
         {
             Current = Mathf.Clamp(value, 0, Maximum);
-            Changed?.Invoke(Current, Maximum);
+            Changed?.Invoke();
         }
     }
 }

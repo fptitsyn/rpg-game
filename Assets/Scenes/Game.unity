@@ -1271,7 +1271,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586971965}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1297,17 +1297,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0.1710622, b: 0.9528302, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: a355fd5991995fa46a6bda1535190b49, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -2997,6 +2997,7 @@ MonoBehaviour:
   inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   gameHud: {fileID: 1224602873}
   playerHealthBar: {fileID: 1878136027}
+  playerManaBar: {fileID: 1596441952}
   mainMenuScene: MainMenu
   pauseMenu: {fileID: 2060687446}
 --- !u!4 &1308136929
@@ -3065,13 +3066,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: a355fd5991995fa46a6bda1535190b49, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3500,7 +3501,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterDefinition: {fileID: 11400000, guid: 9a713283eef55aa4ebfb28f172094b7d, type: 2}
-  weapons: []
+  weapons:
+  - {fileID: 11400000, guid: faa231e672547b24cbc449e04cb2aa5f, type: 2}
+  - {fileID: 11400000, guid: fd8a5c874bd5f3c4fb8ad1dba0765be1, type: 2}
   elements:
   - {fileID: 11400000, guid: 97a6632f56eaf6c438f64639ed51a59e, type: 2}
   - {fileID: 11400000, guid: c9e60f8db57b92241aa50ddd48e0c4ab, type: 2}
@@ -3515,6 +3518,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1596441951}
+  - component: {fileID: 1596441952}
   m_Layer: 5
   m_Name: Magic
   m_TagString: Untagged
@@ -3544,6 +3548,19 @@ RectTransform:
   m_AnchoredPosition: {x: -377.5, y: 172.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1596441952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596441950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32c21de989740249f1b3b1247ef256f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fill: {fileID: 586971967}
 --- !u!1 &1667735523
 GameObject:
   m_ObjectHideFlags: 0

@@ -169,6 +169,19 @@ namespace Actors.Enemies
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             Transform.rotation = Quaternion.RotateTowards(Transform.rotation, targetRotation, 720f * Time.deltaTime);
         }
+        
+        public void FaceTargetImmediately()
+        {
+            Vector3 direction = Target.transform.position - Actor.transform.position;
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude < 0.001f)
+            {
+                return;
+            }
+
+            Actor.transform.rotation = Quaternion.LookRotation(direction);
+        }
 
         public void ForgetTarget()
         {

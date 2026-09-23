@@ -14,7 +14,7 @@ namespace Actors.Enemies.States
         public override void Enter()
         {
             Context.Stop();
-
+            Context.FaceTargetImmediately();
             float duration = Context.PreparationDuration;
             _endTime = Time.time + duration;
 

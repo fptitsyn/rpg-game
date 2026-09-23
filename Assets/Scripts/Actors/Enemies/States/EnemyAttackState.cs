@@ -14,6 +14,7 @@ namespace Actors.Enemies.States
         {
             _attackStarted = false;
             Context.Stop();
+            Context.FaceTargetImmediately();
         }
 
         public override void Tick()

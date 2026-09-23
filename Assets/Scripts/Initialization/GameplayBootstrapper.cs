@@ -39,6 +39,7 @@ namespace Initialization
         [Header("UI")]
         [SerializeField] private GameHud gameHud;
         [SerializeField] private HealthBar playerHealthBar;
+        [SerializeField] private ManaBar playerManaBar;
         
         [SerializeField] private string mainMenuScene = "MainMenu";
         [SerializeField] private PauseMenu pauseMenu;
@@ -69,6 +70,7 @@ namespace Initialization
             _pauseController = new PauseMenuController(new PauseMenuModel(), pauseMenu, saveInteractor, OpenMainMenu);
             
             playerHealthBar.Bind(playerSetup.Combatant.Health, gameCamera);
+            playerManaBar.Bind(playerSetup.Combatant.Mana);
             gameHud.Bind(playerSetup.Combatant.Health, playerSetup.Combat);
 
             _actorFactory = new ActorFactory(projectileFactory, gameCamera);

@@ -35,7 +35,7 @@ namespace UI.InGame
 
         private void Refresh(float current, float maximum)
         {
-            if (fill == null)
+            if (!fill)
             {
                 return;
             }
