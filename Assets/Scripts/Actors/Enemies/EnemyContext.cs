@@ -1,4 +1,5 @@
-﻿using Combat;
+﻿using Actors.Animations;
+using Combat;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,11 @@ namespace Actors.Enemies
         public EnemyMode Mode { get; }
         public bool Ranged { get; }
         public bool WasAttacked { get; set; }
+        
+        public ICharacterAnimation Animation { get; }
+        public AttackAnimation SelectedAttackAnimation { get; }
+        public bool RequiresPreparation { get; }
+        public float PreparationDuration { get; }
 
         public float DistanceToTarget
         {
@@ -45,19 +51,31 @@ namespace Actors.Enemies
         }
 
         public EnemyContext(Transform transform, Combatant actor, Combatant target, NavMeshAgent agent,
-            ActorCombat combat, CharacterDefinition definition, EnemyMode mode, bool ranged)
+            ActorCombat combat, ICharacterAnimation animation, CharacterDefinition definition, EnemyMode mode,
+            bool ranged, AttackAnimation attackAnimation, bool requiresPreparation, float preparationDuration)
         {
             Transform = transform;
             Actor = actor;
             Target = target;
             Agent = agent;
             Combat = combat;
+            Animation = animation;
             Definition = definition;
             Mode = mode;
             Ranged = ranged;
+            SelectedAttackAnimation = attackAnimation;
+            RequiresPreparation = requiresPreparation;
+            PreparationDuration = preparationDuration;
             _path = new NavMeshPath();
         }
 
+        protected EnemyContext(Transform transform, Combatant actor, Combatant target, NavMeshAgent agent,
+            ActorCombat combat, ICharacterAnimation animation, CharacterDefinition definition, EnemyMode mode, bool ranged)
+            : this(transform, actor, target, agent, combat, animation, definition, mode, ranged,
+                AttackAnimation.Attack1, false, 0f)
+        {
+        }
+        
         public bool CanAttack()
         {
             if (!HasLineOfSight)

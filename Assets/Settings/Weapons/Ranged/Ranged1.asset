@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a00c3646ca249c5b1470137016a14a5, type: 3}
+  m_Name: Ranged1
+  m_EditorClassIdentifier: 
+  characterMaterial: {fileID: 2100000, guid: 875ae3cfd53b5da4b8496a30a491ee49, type: 2}
+  projectileColor: {r: 0.12771656, g: 0.015723169, b: 1, a: 1}
+  animationVariant: 0
+  preparationDuration: 0
+  damageMultiplier: 1
+  projectileSpeedMultiplier: 1

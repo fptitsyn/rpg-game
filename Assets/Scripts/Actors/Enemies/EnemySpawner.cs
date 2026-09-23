@@ -49,9 +49,9 @@ namespace Actors.Enemies
                         continue;
                     }
                     
-                    Combatant enemy = _factory.CreateEnemy(settings, point, player, ranged, _enemyMode);
+                    // Combatant enemy = _factory.CreateEnemy(settings, point, player, ranged, _enemyMode);
                     
-                    spawnedEnemies.Add(enemy);
+                    // spawnedEnemies.Add(enemy);
                     _occupied.Add(point);
                     spawned = true;
                     break;
@@ -63,9 +63,9 @@ namespace Actors.Enemies
             return spawnedEnemies;
         }
 
-        public Combatant SpawnBoss(CharacterDefinition definition, Vector3 position, Combatant player, EnemyMode mode)
-        {
-            return _factory.CreateBoss(definition, position, player, mode);
-        }
+        // public Combatant SpawnBoss(CharacterDefinition definition, Vector3 position, Combatant player, EnemyMode mode)
+        // {
+        //     return _factory.CreateBoss(definition, position, player, mode);
+        // }
     }
 }

@@ -6,7 +6,7 @@ namespace Actors.Animations
     public interface ICharacterAnimation
     {
         void SetSpeed(float speed);
-        void PlayAction(string state, float speedMultiplier = 1f);
+        void PlayAction(string state, float duration);
         void ResumeLocomotion();
     }
 
@@ -39,12 +39,11 @@ namespace Actors.Animations
             _animator.SetFloat(SpeedHash, _action ? 0f : normalizedSpeed, 0.1f, Time.deltaTime);
         }
 
-        public void PlayAction(string state, float speedMultiplier = 1f)
+        public void PlayAction(string state, float duration)
         {
             _action = true;
             _animator.SetFloat(SpeedHash, 0f);
 
-            float duration = GetDuration(state) / speedMultiplier;
             float animationSpeed = _clips[state].length / Mathf.Max(0.01f, duration);
 
             _animator.SetFloat(ActionSpeedHash, animationSpeed);
@@ -78,18 +77,6 @@ namespace Actors.Animations
 
             foreach (AnimationClip clip in controller.animationClips)
                 _clips[clip.name] = clip;
-        }
-
-        private float GetDuration(string state)
-        {
-            return state switch
-            {
-                "Melee" => _definition.meleeDuration,
-                "Magic" => _definition.magicDuration,
-                "Hit" => _definition.hitDuration,
-                "Death" => _definition.deathDuration,
-                _ => 1f
-            };
-        }
+        }   
     }
 }

@@ -1995,6 +1995,7 @@ GameObject:
   - component: {fileID: 8621460458003144336}
   - component: {fileID: 5685278387901555242}
   - component: {fileID: 6956343459531762790}
+  - component: {fileID: 4871754461182864733}
   m_Layer: 9
   m_Name: Ranged Enemy
   m_TagString: Enemy
@@ -2064,6 +2065,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4871754461182864733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2858740891376179160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b6b6646a01473893acf3f94f325c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRenderers:
+  - {fileID: 3209686846392322143}
 --- !u!1 &2885783312453284090
 GameObject:
   m_ObjectHideFlags: 0

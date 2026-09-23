@@ -18,15 +18,16 @@ namespace Actors.Boss
 
         public string CurrentState => _stateMachine.CurrentStateName;
 
-        public void Initialize(Combatant owner, Combatant target,  ActorCombat combat,
+        public void Initialize(Combatant owner, Combatant target, ActorCombat combat,
             ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode)
         {
             _actor = owner;
             _target = target;
-            _animation = anim;
             _agent = GetComponent<NavMeshAgent>();
+            _animation = anim;
 
-            _context = new BossContext(transform, owner, target, _agent, combat, definition, mode);
+            _context = new BossContext(transform, owner, target, _agent, combat, anim, definition, mode);
+
             _stateMachine = new StateMachine.StateMachine();
 
             _stateMachine.Add(new BossIdleState(_context, _stateMachine));

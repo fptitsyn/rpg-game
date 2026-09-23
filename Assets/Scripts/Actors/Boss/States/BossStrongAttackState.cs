@@ -1,24 +1,30 @@
-﻿using StateMachine;
+﻿using Actors.Animations;
+using StateMachine;
+using UnityEngine;
 
 namespace Actors.Boss.States
 {
     public sealed class BossStrongAttackState : BossState
     {
         private bool _attackStarted;
+        private AttackAnimation _attackAnimation;
 
-        public BossStrongAttackState(BossContext context, StateMachine.StateMachine stateMachine) : base(context, stateMachine)
+        public BossStrongAttackState(BossContext context, StateMachine.StateMachine stateMachine)
+            : base(context, stateMachine)
         {
         }
 
         public override void Enter()
         {
             _attackStarted = false;
+            _attackAnimation = Random.value < 0.5f ? AttackAnimation.Attack1 : AttackAnimation.Attack2;
             Context.Stop();
         }
 
         public override void Tick()
         {
-            if (Context.DistanceToTarget > Context.Definition.bossStrongAttackRange || !Context.HasLineOfSight)
+            if (Context.DistanceToTarget > Context.Definition.bossStrongAttackRange ||
+                !Context.HasLineOfSight)
             {
                 StateMachine.Change<BossChaseState>();
                 return;
@@ -28,7 +34,8 @@ namespace Actors.Boss.States
 
             if (!_attackStarted)
             {
-                _attackStarted = Context.Combat.TryAttack(true, Context.AttackSpeedMultiplier);
+                _attackStarted = Context.Combat.TryAttack(true, _attackAnimation,
+                    Context.AttackSpeedMultiplier);
 
                 if (_attackStarted)
                     Context.StartStrongAttackCooldown();

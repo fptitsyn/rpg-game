@@ -1,6 +1,7 @@
 using Actors;
 using Actors.Enemies;
 using Actors.Player;
+using Actors.Spawning;
 using CameraScripts;
 using Combat.Projectiles;
 using SaveSystem;
@@ -20,11 +21,12 @@ namespace Initialization
         [Header("Enemies")]
         [SerializeField] private CharacterDefinition meleeEnemy;
         [SerializeField] private CharacterDefinition rangedEnemy;
-        [SerializeField] private EnemyMode enemyMode;
+        [SerializeField] Transform enemySpawnPointsRoot;
+        [SerializeField] EnemyMode enemyMode;
 
         [Header("Boss")]
         [SerializeField] private CharacterDefinition bossDefinition;
-        [SerializeField] private Transform bossSpawnPoint;
+        [SerializeField] BossSpawnPoint bossSpawnPoint;
         
         [Header("Scene")]
         [SerializeField] private Material projectileMaterial;
@@ -44,11 +46,11 @@ namespace Initialization
         private CursorLockMode _previousCursorLock;
         private bool _previousCursorVisibility;
 
-        private PauseMenuController _pauseController;
-
-        private EnemySpawner _enemySpawner;
-        private EnemyWave _enemyWave;
+        private ActorFactory _actorFactory;
         private Combatant _player;
+        private EnemyWave _enemyWave;
+
+        private PauseMenuController _pauseController;
 
         private void Awake()
         {
@@ -69,14 +71,28 @@ namespace Initialization
             playerHealthBar.Bind(playerSetup.Combatant.Health, gameCamera);
             gameHud.Bind(playerSetup.Combatant.Health, playerSetup.Combat);
 
-            ActorFactory actorFactory = new ActorFactory(projectileFactory, gameCamera);
-            _enemySpawner = new EnemySpawner(actorFactory, enemyMode);
+            _actorFactory = new ActorFactory(projectileFactory, gameCamera);
 
             _enemyWave = new EnemyWave();
             _enemyWave.AllEnemiesDead += SpawnBoss;
-            
-            _enemyWave.Add(_enemySpawner.Spawn(meleeEnemy, _player, false, Random.Range(1, 3)));
-            _enemyWave.Add(_enemySpawner.Spawn(rangedEnemy, _player, true, Random.Range(1, 3)));
+            MeleeEnemySpawnPoint[] meleeSpawnPoints =
+                enemySpawnPointsRoot.GetComponentsInChildren<MeleeEnemySpawnPoint>();
+
+            foreach (MeleeEnemySpawnPoint spawnPoint in meleeSpawnPoints)
+            {
+                Combatant enemy = spawnPoint.Spawn(_actorFactory, _player, enemyMode);
+                _enemyWave.Add(enemy);
+            }
+
+            RangedEnemySpawnPoint[] rangedSpawnPoints =
+                enemySpawnPointsRoot.GetComponentsInChildren<RangedEnemySpawnPoint>();
+
+            foreach (RangedEnemySpawnPoint spawnPoint in rangedSpawnPoints)
+            {
+                Combatant enemy = spawnPoint.Spawn(_actorFactory, _player, enemyMode);
+                _enemyWave.Add(enemy);
+            }
+
             _enemyWave.Begin();
             
             Cursor.lockState = CursorLockMode.Locked;
@@ -94,6 +110,7 @@ namespace Initialization
         private void OnDestroy()
         {
             pauseMenu.MainMenuClicked -= OpenMainMenu;
+            _enemyWave.AllEnemiesDead -= SpawnBoss;
             
             Cursor.lockState = _previousCursorLock;
             Cursor.visible = _previousCursorVisibility;
@@ -101,7 +118,7 @@ namespace Initialization
 
         private void SpawnBoss()
         {
-            _enemySpawner.SpawnBoss(bossDefinition, bossSpawnPoint.position, _player, enemyMode);
+            bossSpawnPoint.Spawn(_actorFactory, _player, enemyMode);
         }
     }
 }

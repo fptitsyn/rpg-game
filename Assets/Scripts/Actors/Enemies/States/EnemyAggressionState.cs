@@ -31,7 +31,11 @@ namespace Actors.Enemies.States
 
             if (Context.CanAttack())
             {
-                StateMachine.Change<EnemyAttackState>();
+                if (Context.RequiresPreparation)
+                    StateMachine.Change<EnemyPrepareAttackState>();
+                else
+                    StateMachine.Change<EnemyAttackState>();
+
                 return;
             }
 

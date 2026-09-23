@@ -36,6 +36,17 @@ namespace Actors
         
         public bool TryAttack(bool magical, float speedMultiplier = 1f)
         {
+            string animationState = magical ? "Magic" : "Melee";
+            return TryAttack(magical, animationState, speedMultiplier);
+        }
+
+        public bool TryAttack(bool magical, AttackAnimation attackAnimation, float speedMultiplier = 1f)
+        {
+            return TryAttack(magical, attackAnimation.ToString(), speedMultiplier);
+        }
+
+        private bool TryAttack(bool magical, string animationState, float speedMultiplier)
+        {
             if (magical && _actor.Mana != null && _actor.Mana.Current < _definition.magicCost)
                 return false;
 
@@ -61,7 +72,7 @@ namespace Actors
                 _nextMelee = Time.time + cooldown;
             }
 
-            _animationView.PlayAction(magical ? "Magic" : "Melee", speedMultiplier);
+            _animationView.PlayAction(animationState, duration);
             _wasLocked = true;
             return true;
         }
@@ -83,14 +94,16 @@ namespace Actors
             _timeline.Cancel();
             _hitUntil = Time.time + _definition.hitDuration;
             _wasLocked = true;
-            _animationView.PlayAction("Hit");
+            _animationView.PlayAction("Hit", _definition.hitDuration);
         }
         
         private void OnDied()
         {
             _timeline.Cancel();
-            _animationView.PlayAction("Death");
-            if (_actor.Faction == Faction.Enemy) Destroy(gameObject, _definition.deathDuration);
+            _animationView.PlayAction("Death", _definition.deathDuration);
+
+            if (_actor.Faction == Faction.Enemy)
+                Destroy(gameObject, _definition.deathDuration);
         }
         
         private void OnDisable() => _timeline.Cancel();

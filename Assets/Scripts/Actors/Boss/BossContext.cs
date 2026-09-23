@@ -1,4 +1,5 @@
-﻿using Actors.Enemies;
+﻿using Actors.Animations;
+using Actors.Enemies;
 using Combat;
 using UnityEngine;
 using UnityEngine.AI;
@@ -34,8 +35,8 @@ namespace Actors.Boss
         }
 
         public BossContext(Transform transform, Combatant actor, Combatant target, NavMeshAgent agent,
-            ActorCombat combat, CharacterDefinition definition, EnemyMode mode)
-            : base(transform, actor, target, agent, combat, definition, mode, false)
+            ActorCombat combat, ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode)
+            : base(transform, actor, target, agent, combat, anim, definition, mode, false)
         {
         }
 

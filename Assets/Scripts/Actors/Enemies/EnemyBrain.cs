@@ -20,18 +20,22 @@ namespace Actors.Enemies
         public string CurrentState => _stateMachine.CurrentStateName;
 
         public void Initialize(Combatant owner, Combatant target, ActorCombat combat,
-            ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode, bool ranged)
+            ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode, bool ranged,
+            AttackAnimation attackAnimation, bool requiresPreparation, float preparationDuration)
         {
             _actor = owner;
             _target = target;
-            _animation = anim;
             _agent = GetComponent<NavMeshAgent>();
+            _animation = anim;
 
-            _context = new EnemyContext(transform, owner, target, _agent, combat, definition, mode, ranged);
+            _context = new EnemyContext(transform, owner, target, _agent, combat, anim, definition, mode, ranged,
+                attackAnimation, requiresPreparation, preparationDuration);
+
             _stateMachine = new StateMachine.StateMachine();
 
             _stateMachine.Add(new EnemyIdleState(_context, _stateMachine));
             _stateMachine.Add(new EnemyAggressionState(_context, _stateMachine));
+            _stateMachine.Add(new EnemyPrepareAttackState(_context, _stateMachine));
             _stateMachine.Add(new EnemyAttackState(_context, _stateMachine));
             _stateMachine.Add(new EnemyFleeState(_context, _stateMachine));
             _stateMachine.Add(new EnemyDeadState(_context, _stateMachine));

@@ -40,7 +40,7 @@ namespace Actors.Enemies.States
 
             if (!_attackStarted)
             {
-                _attackStarted = Context.Combat.TryAttack(Context.Ranged);
+                _attackStarted = Context.Combat.TryAttack(Context.Ranged, Context.SelectedAttackAnimation);
                 return;
             }
 

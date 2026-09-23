@@ -1,10 +1,13 @@
-﻿using StateMachine;
+﻿using Actors.Animations;
+using StateMachine;
+using UnityEngine;
 
 namespace Actors.Boss.States
 {
     public sealed class BossAttackState : BossState
     {
         private bool _attackStarted;
+        private AttackAnimation _attackAnimation;
 
         public BossAttackState(BossContext context, StateMachine.StateMachine stateMachine) : base(context, stateMachine)
         {
@@ -13,12 +16,13 @@ namespace Actors.Boss.States
         public override void Enter()
         {
             _attackStarted = false;
+            _attackAnimation = Random.value < 0.5f ? AttackAnimation.Attack1 : AttackAnimation.Attack2;
             Context.Stop();
         }
 
         public override void Tick()
         {
-            if (Context.DistanceToTarget > Context.Definition.meleeReach || !Context.HasLineOfSight)
+            if (!Context.CanAttack())
             {
                 StateMachine.Change<BossChaseState>();
                 return;
@@ -28,7 +32,9 @@ namespace Actors.Boss.States
 
             if (!_attackStarted)
             {
-                _attackStarted = Context.Combat.TryAttack(false, Context.AttackSpeedMultiplier);
+                _attackStarted = Context.Combat.TryAttack(false, _attackAnimation,
+                    Context.AttackSpeedMultiplier);
+
                 return;
             }
 

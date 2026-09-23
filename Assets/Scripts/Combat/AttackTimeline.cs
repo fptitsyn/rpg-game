@@ -2,7 +2,10 @@ using System;
 
 namespace Combat
 {
-    public interface IAttackEffect { void Execute(); }
+    public interface IAttackEffect
+    {
+        void Execute();
+    }
 
     public sealed class AttackTimeline
     {
