@@ -4,6 +4,7 @@ using Actors.Player;
 using Actors.Spawning;
 using CameraScripts;
 using Combat.Projectiles;
+using Game;
 using SaveSystem;
 using UI.InGame;
 using UI.Menu.Pause;
@@ -44,12 +45,18 @@ namespace Initialization
         [SerializeField] private string mainMenuScene = "MainMenu";
         [SerializeField] private PauseMenu pauseMenu;
 
+        [Header("Progress")]
+        [SerializeField] ScoreView scoreView;
+        [SerializeField] int scorePerEnemy = 100;
+
+        private EnemyKillCounter _enemyKillCounter;
+        private Score _score;
+        
         private CursorLockMode _previousCursorLock;
         private bool _previousCursorVisibility;
 
         private ActorFactory _actorFactory;
         private Combatant _player;
-        private EnemyWave _enemyWave;
 
         private PauseMenuController _pauseController;
 
@@ -75,15 +82,19 @@ namespace Initialization
 
             _actorFactory = new ActorFactory(projectileFactory, gameCamera);
 
-            _enemyWave = new EnemyWave();
-            _enemyWave.AllEnemiesDead += SpawnBoss;
+            _score = new Score();
+            scoreView.Bind(_score);
+
+            _enemyKillCounter = new EnemyKillCounter();
+            _enemyKillCounter.EnemyKilled += OnEnemyKilled;
+            
             MeleeEnemySpawnPoint[] meleeSpawnPoints =
                 enemySpawnPointsRoot.GetComponentsInChildren<MeleeEnemySpawnPoint>();
 
             foreach (MeleeEnemySpawnPoint spawnPoint in meleeSpawnPoints)
             {
                 Combatant enemy = spawnPoint.Spawn(_actorFactory, _player, enemyMode);
-                _enemyWave.Add(enemy);
+                _enemyKillCounter.Register(enemy);
             }
 
             RangedEnemySpawnPoint[] rangedSpawnPoints =
@@ -92,11 +103,9 @@ namespace Initialization
             foreach (RangedEnemySpawnPoint spawnPoint in rangedSpawnPoints)
             {
                 Combatant enemy = spawnPoint.Spawn(_actorFactory, _player, enemyMode);
-                _enemyWave.Add(enemy);
+                _enemyKillCounter.Register(enemy);
             }
 
-            _enemyWave.Begin();
-            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             
@@ -112,7 +121,8 @@ namespace Initialization
         private void OnDestroy()
         {
             pauseMenu.MainMenuClicked -= OpenMainMenu;
-            _enemyWave.AllEnemiesDead -= SpawnBoss;
+            _enemyKillCounter.EnemyKilled -= OnEnemyKilled;
+            _enemyKillCounter.Dispose();
             
             Cursor.lockState = _previousCursorLock;
             Cursor.visible = _previousCursorVisibility;
@@ -121,6 +131,16 @@ namespace Initialization
         private void SpawnBoss()
         {
             bossSpawnPoint.Spawn(_actorFactory, _player, enemyMode);
+        }
+        
+        private void OnEnemyKilled(int killedCount)
+        {
+            _score.Add(scorePerEnemy);
+
+            if (killedCount == 3)
+            {
+                SpawnBoss();
+            }
         }
     }
 }
