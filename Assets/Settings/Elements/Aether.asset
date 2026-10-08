@@ -15,12 +15,10 @@ MonoBehaviour:
   type: 3
   damageMultiplier: 1
   meleeEffect:
-    color: {r: 1, g: 1, b: 1, a: 1}
     attackSound: {fileID: 0}
-    attackEffect: {fileID: 0}
+    attackEffect: {fileID: 8890124737990999738, guid: 8632cd4c8248e324ba73a4cfcf10dbf6, type: 3}
     projectileEffect: {fileID: 0}
   rangedEffect:
-    color: {r: 1, g: 1, b: 1, a: 1}
     attackSound: {fileID: 0}
     attackEffect: {fileID: 0}
     projectileEffect: {fileID: 0}

@@ -12,7 +12,7 @@ namespace SaveSystem
     public sealed class FileGameSaveRepository : IGameSaveRepository
     {
         private readonly string _path;
-        public static int CurrentSaveNumber = 1;
+        public static int currentSaveNumber = 1;
 
         public FileGameSaveRepository(string path)
         {
@@ -22,7 +22,7 @@ namespace SaveSystem
         public void Save(SaveData.GameSaveData data)
         {
             File.WriteAllText(_path, JsonUtility.ToJson(data, true));
-            CurrentSaveNumber++;
+            currentSaveNumber++;
         }
 
         public bool TryLoad(out SaveData.GameSaveData data)

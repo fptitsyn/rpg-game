@@ -28,6 +28,7 @@ namespace Initialization
         [Header("Boss")]
         [SerializeField] private CharacterDefinition bossDefinition;
         [SerializeField] BossSpawnPoint bossSpawnPoint;
+        [SerializeField] private int killThresholdForBoss;
         
         [Header("Scene")]
         [SerializeField] private Material projectileMaterial;
@@ -137,7 +138,7 @@ namespace Initialization
         {
             _score.Add(scorePerEnemy);
 
-            if (killedCount == 3)
+            if (killedCount == killThresholdForBoss)
             {
                 SpawnBoss();
             }

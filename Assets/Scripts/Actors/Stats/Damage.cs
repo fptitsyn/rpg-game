@@ -26,12 +26,4 @@ namespace Actors.Stats
         bool IsAlive { get; }
         void Receive(in Damage damage);
     }
-
-    public interface IHealth
-    {
-        float Current { get; }
-        float Maximum { get; }
-        event Action<float, float> Changed;
-        event Action Died;
-    }
 }

@@ -16,8 +16,6 @@ namespace Actors.Boss
         private BossContext _context;
         private StateMachine.StateMachine _stateMachine;
 
-        public string CurrentState => _stateMachine.CurrentStateName;
-
         public void Initialize(Combatant owner, Combatant target, ActorCombat combat,
             ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode)
         {
@@ -35,7 +33,6 @@ namespace Actors.Boss
             _stateMachine.Add(new BossChaseState(_context, _stateMachine));
             _stateMachine.Add(new BossAttackState(_context, _stateMachine));
             _stateMachine.Add(new BossStrongAttackState(_context, _stateMachine));
-            _stateMachine.Add(new BossRepositionState(_context, _stateMachine));
             _stateMachine.Add(new BossDeadState(_context, _stateMachine));
 
             _actor.Health.Damaged += OnDamaged;

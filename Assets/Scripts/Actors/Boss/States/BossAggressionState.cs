@@ -15,15 +15,15 @@ namespace Actors.Boss.States
 
         public override void Tick()
         {
-            if (Context.CanUseStrongAttack())
-            {
-                StateMachine.Change<BossStrongAttackState>();
-                return;
-            }
-
             if (Context.DistanceToTarget <= Context.Definition.meleeReach && Context.HasLineOfSight)
             {
                 StateMachine.Change<BossAttackState>();
+                return;
+            }
+            
+            if (Context.CanUseStrongAttack())
+            {
+                StateMachine.Change<BossStrongAttackState>();
                 return;
             }
 

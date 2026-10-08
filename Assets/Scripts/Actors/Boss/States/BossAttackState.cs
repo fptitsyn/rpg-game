@@ -44,7 +44,7 @@ namespace Actors.Boss.States
             }
 
             if (!Context.Combat.IsLocked)
-                StateMachine.Change<BossRepositionState>();
+                StateMachine.Change<BossAggressionState>();
         }
     }
 }

@@ -2,6 +2,14 @@ using System;
 
 namespace Actors.Stats
 {
+    public interface IHealth
+    {
+        float Current { get; }
+        float Maximum { get; }
+        event Action<float, float> Changed;
+        event Action Died;
+    }
+    
     public sealed class Health : IHealth, IDamageReceiver
     {
         public float Maximum { get; }

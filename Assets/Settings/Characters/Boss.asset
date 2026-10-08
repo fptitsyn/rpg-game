@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualPrefab: {fileID: 1537796346829984, guid: 361942b45b1d24e70961ffe6c0c45cae, type: 3}
   controller: {fileID: 22100000, guid: 222840a18bdcda64ab6d6bddb4a94a8a, type: 2}
-  health: 500
+  health: 200
   physicalDamage: 30
-  magicalDamage: 60
+  magicalDamage: 40
   walkSpeed: 3.5
   runSpeed: 6
   meleeDuration: 0.9
@@ -31,6 +31,7 @@ MonoBehaviour:
   deathDuration: 2.5
   maxMana: 100
   magicCost: 20
+  manaRegenPerSec: 5
   projectileSpeed: 12
   projectileLifetime: 3
   projectileColor: {r: 0.2, g: 0.75, b: 1, a: 1}

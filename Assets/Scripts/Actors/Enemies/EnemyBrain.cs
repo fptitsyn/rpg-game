@@ -17,8 +17,6 @@ namespace Actors.Enemies
         private EnemyContext _context;
         private StateMachine.StateMachine _stateMachine;
 
-        public string CurrentState => _stateMachine.CurrentStateName;
-
         public void Initialize(Combatant owner, Combatant target, ActorCombat combat,
             ICharacterAnimation anim, CharacterDefinition definition, EnemyMode mode, bool ranged,
             AttackAnimation attackAnimation, bool requiresPreparation, float preparationDuration)

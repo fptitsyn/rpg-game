@@ -13,14 +13,14 @@
 
         public void Save()
         {
-            _repository.Save(new SaveData.GameSaveData { Player = _player.Capture() });
+            _repository.Save(new SaveData.GameSaveData { player = _player.Capture() });
         }
 
         public bool Load()
         {
             if (!_repository.TryLoad(out SaveData.GameSaveData data)) return false;
             
-            _player.Restore(data.Player);
+            _player.Restore(data.player);
             return true;
         }
     }

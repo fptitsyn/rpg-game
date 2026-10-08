@@ -17,20 +17,32 @@ MonoBehaviour:
   health: 55
   physicalDamage: 0
   magicalDamage: 15
-  walkSpeed: 2.6
+  walkSpeed: 2.5
   runSpeed: 4
-  meleeDuration: 1.3333334
-  meleeImpact: 0.50666666
-  magicDuration: 1.8333334
-  magicImpact: 0.64166665
-  meleeCooldown: 1.5833334
+  meleeDuration: 1.3
+  meleeImpact: 0.5
+  magicDuration: 1.8
+  magicImpact: 0.64
+  meleeCooldown: 1.6
   magicCooldown: 2.2
   meleeReach: 2
   meleeArc: 110
   hitDuration: 0.35
-  deathDuration: 1.2333333
+  deathDuration: 1.3
   maxMana: 100
   magicCost: 20
+  manaRegenPerSec: 5
   projectileSpeed: 12
   projectileLifetime: 3
   projectileColor: {r: 1, g: 0.25, b: 0.7, a: 1}
+  detectionDistance: 10
+  loseTargetDistance: 14
+  fleeHealthRatio: 0.25
+  fleeDistance: 6
+  rangedMinDistance: 4
+  rangedMaxDistance: 9
+  bossStrongAttackRange: 8
+  bossStrongAttackCooldown: 6
+  bossRepositionDuration: 0.75
+  enragedHealthRatio: 0.5
+  enragedAttackSpeed: 1.5

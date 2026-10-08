@@ -3142,6 +3142,7 @@ MonoBehaviour:
   enemyMode: 0
   bossDefinition: {fileID: 11400000, guid: 9a713283eef55aa4ebfb28f172094b7d, type: 2}
   bossSpawnPoint: {fileID: 1581901005}
+  killThresholdForBoss: 1
   projectileMaterial: {fileID: 2100000, guid: 8c0c193a80c1ad94c8670888d22bb987, type: 2}
   gameCamera: {fileID: 1061242130}
   orbitCamera: {fileID: 1061242134}

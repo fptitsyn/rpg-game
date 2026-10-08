@@ -15,7 +15,7 @@ namespace Initialization
         private static GameBootstrapper _instance;
 
         public static GameBootstrapper Instance => _instance;
-        public GameServices Services { get; private set; }
+        public ServiceLocator Services { get; private set; }
 
         private void Awake()
         {
@@ -31,10 +31,10 @@ namespace Initialization
 
             IAudioService audioService = new AudioService(audioMixer);
 
-            string savePath = Path.Combine(Application.persistentDataPath, $"save.json_{FileGameSaveRepository.CurrentSaveNumber}");
+            string savePath = Path.Combine(Application.persistentDataPath, $"save.json_{FileGameSaveRepository.currentSaveNumber}");
             IGameSaveRepository saveRepository = new FileGameSaveRepository(savePath);
             
-            Services = new GameServices(audioService, saveRepository);
+            Services = new ServiceLocator(audioService, saveRepository);
         }
 
         private void Start()

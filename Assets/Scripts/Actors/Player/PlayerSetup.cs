@@ -49,22 +49,22 @@ namespace Actors.Player
         {
             return new SaveData.PlayerSaveData
             {
-                Position = transform.position,
-                Rotation = transform.rotation,
-                Health = combatant.Health.Current,
-                Mana = combatant.Mana.Current
+                position = transform.position,
+                rotation = transform.rotation,
+                health = combatant.Health.Current,
+                mana = combatant.Mana.Current
             };
         }
 
         public void Restore(SaveData.PlayerSaveData data)
         {
             characterController.enabled = false;
-            transform.SetPositionAndRotation(data.Position, data.Rotation);
+            transform.SetPositionAndRotation(data.position, data.rotation);
             characterController.enabled = true;
 
             playerMotor.ResetMovement();
-            combatant.Health.Restore(data.Health);
-            combatant.Mana.Restore(data.Mana);
+            combatant.Health.Restore(data.health);
+            combatant.Mana.Restore(data.mana);
             actorCombat.ResetAfterLoad();
         }
     }
