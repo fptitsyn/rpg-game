@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be8cd3ec9004fca8593cb271c4eccfb, type: 3}
+  m_Name: Earth
+  m_EditorClassIdentifier: 
+  type: 2
+  damageMultiplier: 1
+  meleeEffect:
+    attackSound: {fileID: 0}
+    attackEffect: {fileID: 8890124737990999738, guid: 56f6eb510899dfc43a7a0d360ac7743d, type: 3}
+    projectileEffect: {fileID: 0}
+  rangedEffect:
+    attackSound: {fileID: 0}
+    attackEffect: {fileID: 0}
+    projectileEffect: {fileID: 0}

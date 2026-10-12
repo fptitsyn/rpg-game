@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d1c82899035e96995edd96ada7a9d7, type: 3}
+  m_Name: MeleeEnemy
+  m_EditorClassIdentifier: 
+  visualPrefab: {fileID: 3517358742485809428, guid: 5926bf47059af954a826a3cfa1aa487a, type: 3}
+  controller: {fileID: 22100000, guid: b25dd3f1f2dccee49a1e2929f614465f, type: 2}
+  health: 70
+  physicalDamage: 12
+  magicalDamage: 0
+  walkSpeed: 2.8
+  runSpeed: 4
+  meleeDuration: 1.3
+  meleeImpact: 0.5
+  magicDuration: 1.8
+  magicImpact: 0.64
+  meleeCooldown: 1.6
+  magicCooldown: 2.2
+  meleeReach: 2
+  meleeArc: 110
+  hitDuration: 0.35
+  deathDuration: 1.3
+  maxMana: 100
+  magicCost: 20
+  manaRegenPerSec: 5
+  projectileSpeed: 12
+  projectileLifetime: 3
+  projectileColor: {r: 0.2, g: 0.75, b: 1, a: 1}
+  detectionDistance: 10
+  loseTargetDistance: 14
+  fleeHealthRatio: 0.25
+  fleeDistance: 6
+  rangedMinDistance: 4
+  rangedMaxDistance: 9
+  bossStrongAttackRange: 8
+  bossStrongAttackCooldown: 6
+  bossRepositionDuration: 0.75
+  enragedHealthRatio: 0.5
+  enragedAttackSpeed: 1.5
